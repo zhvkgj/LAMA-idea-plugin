@@ -71,7 +71,34 @@ infixity ::= infix | infixl | infixr
 level ::= [at | before | after] INFIX
 
 // TODO
-expression ::= (decimal | string | char)
+expression ::= primary
+
+primary ::=
+    decimal            |
+    string             |
+    char               |
+    lident             |
+    listExpression     |
+    arrayExpression    |
+    sExpression        |
+    ifExpression       |
+    whileDoExpression
+
+listExpression ::=
+    "[" [expression ("," expression)*] "]"
+
+arrayExpression ::=
+    "{" [expression ("," expression)*] "}"
+
+sExpression ::=
+    uident ["(" [expression ("," expression)*] ")"]
+
+ifExpression ::=
+    if expression then scopeExpression [ elsePart ] fi
+
+elsePart ::= elif expression then scopeExpression [ elsePart ] | else scopeExpression
+
+whileDoExpression ::= while expression do scopeExpression od
 
 //private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
 //
