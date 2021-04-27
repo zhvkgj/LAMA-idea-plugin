@@ -17,6 +17,8 @@
            implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
         <fileType name="Lama File" implementationClass="ru.mse.itmo.lama.language.LamaFileType"
                   fieldName="INSTANCE" language="Lama" extensions="lama"/>
+        <lang.commenter language="Lama" implementationClass="ru.mse.itmo.lama.editor.LamaCommenter"/>
+        <!--        <psi.referenceContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
     </extensions>
 
     <actions>
