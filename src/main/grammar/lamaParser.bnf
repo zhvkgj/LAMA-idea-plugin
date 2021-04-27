@@ -1,0 +1,63 @@
+{
+  tokens=[
+    // Section keywords
+    after='after'
+    esac='esac'
+    infixl='infixl'
+    infixr='infixr'
+    lazy='lazy'
+    od='od'
+    of='of'
+    public='public'
+    sexp='sexp'
+    skip='skip'
+    str='str'
+    syntax='syntax'
+    then='then'
+    true='true'
+    val='val'
+    var='var'
+    while='while'
+
+    // Section 2.1.1
+    space='regexp:\s+'
+    singleComment='regexp:--'
+    multiComment='regexp:\(\*.*?\*\)'
+
+    // Section 2.1.2
+    uident='regexp:[A-Z][a-zA-Z_0-9]*'
+    lident='regexp:[a-z][a-zA-Z_0-9]*'
+    decimal='regexp:-?[0-9]+'
+    string="regexp:\"([^\"\\]|\\.)*\""
+    char="regexp:'([^']|''|\n|\t)'"
+
+    infix="regexp:[+*/%$#@!|&^?<>:=\\-]+"
+  ]
+//
+//  name(".*expr")='expression'
+//  extends(".*expr")=expr
+}
+
+compilation_unit ::= scope_expression
+scope_expression ::= definition *
+definition ::= variableDefinition
+variableDefinition ::= var variableDefinitionItem ';'
+variableDefinitionItem ::= lident '=' (decimal | string | char)
+
+//private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
+//
+//property ::= (uident|lident) '=' expr  {pin=2}
+//private property_recover ::= !(';' | id '=')
+//
+//expr ::= factor plus_expr *
+//left plus_expr ::= plus_op factor
+//private plus_op ::= '+'|'-'
+//private factor ::= primary mul_expr *
+//left mul_expr  ::= mul_op primary
+//private mul_op ::= '*'|'/'
+//private primary ::= primary_inner factorial_expr ?
+//left factorial_expr ::= '!'
+//private primary_inner ::= literal_expr | ref_expr | paren_expr
+//paren_expr ::= '(' expr ')' {pin=1}
+//ref_expr ::= id
+//literal_expr ::= number | string | float | char
