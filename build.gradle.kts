@@ -1,10 +1,13 @@
 plugins {
+    // Kotlin support
+    id("org.jetbrains.kotlin.jvm") version "1.4.21"
     id("org.jetbrains.intellij") version "0.7.3"
     java
 }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
+val myPluginName = "Plama"
 
 repositories {
     mavenCentral()
@@ -17,8 +20,11 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "2021.1 RC"
+    version = "IC-2020.1"
+    pluginName = myPluginName
 }
+
+
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
