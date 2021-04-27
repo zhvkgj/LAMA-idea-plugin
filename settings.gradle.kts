@@ -1,0 +1,2 @@
+rootProject.name = "lama-plugin"
+
