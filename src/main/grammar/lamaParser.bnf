@@ -73,7 +73,7 @@ scopeExpression ::= definition * [expression]
 definition ::= variableDefinition | functionDefinition | infixDefinition
 variableDefinition ::= (var | public) variableDefinitionSeq ';'
 variableDefinitionSeq ::= variableDefinitionItem (',' variableDefinitionItem) *
-variableDefinitionItem ::= lident ['=' expression]
+variableDefinitionItem ::= lident ['=' basicExpression]
 functionDefinition ::= [public] fun lident '(' functionArguments ')' functionBody
 functionArguments ::= [lident (',' lident) *]
 functionBody ::= '{' scopeExpression '}'
@@ -83,35 +83,67 @@ infixHead ::= [public] infixity infixop level
 infixity ::= infix | infixl | infixr
 level ::= [at | before | after] infixop
 
-// TODO
-expression ::= primary
+expression ::= basicExpression [';' expression]
 
+basicExpression ::= binaryExpression | binaryOperand
+
+binaryExpression ::= basicExpression infixop basicExpression {extends=basicExpression}
+
+binaryOperand ::= postfixExpression {extends=basicExpression}
+
+postfixExpression ::=
+    primary      |
+    functionCall |
+    arrayIndexing
+
+functionCall ::=
+    postfixExpression '(' [ expression (',' expression)* ] ')' {extends=postfixExpression}
+
+arrayIndexing ::=
+    postfixExpression '[' expression ']' {extends=postfixExpression}
+
+// TODO: case expression
 primary ::=
-    decimal            |
-    string             |
-    char               |
-    lident             |
-    listExpression     |
-    arrayExpression    |
-    sExpression        |
-    ifExpression       |
-    whileDoExpression
+    decimal                 |
+    string                  |
+    char                    |
+    lident                  |
+    true                    |
+    false                   |
+    infix                   |
+    skip                    |
+    '(' scopeExpression ')' |
+    listExpression          |
+    arrayExpression         |
+    sExpression             |
+    ifExpression            |
+    whileDoExpression       |
+    doWhileExpression       |
+    forExpression
+    {extends=postfixExpression}
 
 listExpression ::=
-    "[" [expression ("," expression)*] "]"
+    '{' [expression (',' expression)*] '}'
 
 arrayExpression ::=
-    "{" [expression ("," expression)*] "}"
+    "[" [expression ("," expression)*] "]"
 
 sExpression ::=
-    uident ["(" [expression ("," expression)*] ")"]
+    uident [ '(' expression [ (',' expression)* ] ')' ]
 
 ifExpression ::=
     if expression then scopeExpression [ elsePart ] fi
 
-elsePart ::= elif expression then scopeExpression [ elsePart ] | else scopeExpression
+elsePart ::=
+    elif expression then scopeExpression [ elsePart ] |
+    else scopeExpression
 
 whileDoExpression ::= while expression do scopeExpression od
+
+doWhileExpression ::= do scopeExpression while expression od
+
+forExpression ::=
+    for scopeExpression ',' expression ',' expression do scopeExpression od
 
 //private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
 //
