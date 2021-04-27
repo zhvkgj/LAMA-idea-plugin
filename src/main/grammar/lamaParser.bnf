@@ -1,4 +1,17 @@
 {
+  parserClass="ru.mse.itmo.lama.language.parser.LamaParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="LamaWTF"
+  psiImplClassSuffix="ImplWTF"
+  psiPackage="ru.mse.itmo.lama.language.psi"
+  psiImplPackage="ru.mse.itmo.lama.language.psi.impl"
+
+  elementTypeHolderClass="ru.mse.itmo.lama.language.psi.LamaTypes"
+  elementTypeClass="ru.mse.itmo.lama.language.psi.LamaElementType"
+  tokenTypeClass="ru.mse.itmo.lama.language.psi.LamaTokenType"
+
   tokens=[
     // Section keywords
     after='after'
@@ -47,7 +60,7 @@
     string="regexp:\"([^\"\\]|\\.)*\""
     char="regexp:'([^']|''|\n|\t)'"
 
-    INFIX="regexp:[+*/%$#@!|&^?<>:=\\-]+"
+    infixop="regexp:[+*/%$#@!|&\^?<>:=\\-]+"
   ]
 //
 //  name(".*expr")='expression'
@@ -66,9 +79,9 @@ functionArguments ::= [lident (',' lident) *]
 functionBody ::= '{' scopeExpression '}'
 
 infixDefinition ::= infixHead '(' functionArguments ')' functionBody
-infixHead ::= [public] infixity INFIX level
+infixHead ::= [public] infixity infixop level
 infixity ::= infix | infixl | infixr
-level ::= [at | before | after] INFIX
+level ::= [at | before | after] infixop
 
 // TODO
 expression ::= primary

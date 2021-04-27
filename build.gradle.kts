@@ -5,6 +5,14 @@ plugins {
     java
 }
 
+java {
+    sourceSets {
+        main {
+            java.setSrcDirs(listOf("src/main/gen", "src/main/java"))
+        }
+    }
+}
+
 group = "org.example"
 version = "1.0-SNAPSHOT"
 val myPluginName = "Plama"
@@ -32,4 +40,7 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
     changeNotes("""
       Add change notes here.<br>
       <em>most HTML tags may be used</em>""")
-} 
+}
+tasks.compileJava {
+    options.release.set(11)
+}

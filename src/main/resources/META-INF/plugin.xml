@@ -13,7 +13,10 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <lang.parserDefinition language="Lama"
+           implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
+        <fileType name="Lama File" implementationClass="ru.mse.itmo.lama.language.LamaFileType"
+                  fieldName="INSTANCE" language="Lama" extensions="lama"/>
     </extensions>
 
     <actions>
