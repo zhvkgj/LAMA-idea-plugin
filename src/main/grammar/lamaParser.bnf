@@ -4,20 +4,36 @@
     after='after'
     esac='esac'
     infixl='infixl'
-    infixr='infixr'
-    lazy='lazy'
-    od='od'
-    of='of'
-    public='public'
-    sexp='sexp'
-    skip='skip'
-    str='str'
     syntax='syntax'
+    array='array'
+    eta='eta'
+    infixr='infixr'
     then='then'
+    at='at'
+    false='false'
+    lazy='lazy'
     true='true'
+    before='before'
+    fi='fi'
+    od='od'
     val='val'
+    box='box'
+    for='for'
+    of='of'
     var='var'
+    case='case'
+    fun='fun'
+    public='public'
     while='while'
+    do='do'
+    if='if'
+    sexp='sexp'
+    elif='elif'
+    import='import'
+    skip='skip'
+    else='else'
+    infix='infix'
+    str='str'
 
     // Section 2.1.1
     space='regexp:\s+'
@@ -31,18 +47,31 @@
     string="regexp:\"([^\"\\]|\\.)*\""
     char="regexp:'([^']|''|\n|\t)'"
 
-    infix="regexp:[+*/%$#@!|&^?<>:=\\-]+"
+    INFIX="regexp:[+*/%$#@!|&^?<>:=\\-]+"
   ]
 //
 //  name(".*expr")='expression'
 //  extends(".*expr")=expr
 }
 
-compilation_unit ::= scope_expression
-scope_expression ::= definition *
-definition ::= variableDefinition
-variableDefinition ::= var variableDefinitionItem ';'
-variableDefinitionItem ::= lident '=' (decimal | string | char)
+compilation_unit ::= importRule * scopeExpression
+importRule ::= import uident ';'
+scopeExpression ::= definition * [expression]
+definition ::= variableDefinition | functionDefinition | infixDefinition
+variableDefinition ::= (var | public) variableDefinitionSeq ';'
+variableDefinitionSeq ::= variableDefinitionItem (',' variableDefinitionItem) *
+variableDefinitionItem ::= lident ['=' expression]
+functionDefinition ::= [public] fun lident '(' functionArguments ')' functionBody
+functionArguments ::= [lident (',' lident) *]
+functionBody ::= '{' scopeExpression '}'
+
+infixDefinition ::= infixHead '(' functionArguments ')' functionBody
+infixHead ::= [public] infixity INFIX level
+infixity ::= infix | infixl | infixr
+level ::= [at | before | after] INFIX
+
+// TODO
+expression ::= (decimal | string | char)
 
 //private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
 //
