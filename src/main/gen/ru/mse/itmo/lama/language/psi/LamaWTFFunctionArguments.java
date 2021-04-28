@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface LamaWTFFunctionArguments extends PsiElement {
 
+  @NotNull
+  List<LamaWTFFunctionArgument> getFunctionArgumentList();
+
 }

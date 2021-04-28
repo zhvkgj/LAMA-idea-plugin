@@ -85,7 +85,7 @@
     add="regexp:[+-]"
     mul="regexp:[*/%]"
 
-    infixop="regexp:[+*/%$#@!|&^?<>:=\\-]+"
+    infixop="regexp:[+*/%$#@!|&\^?<>:=\\-]+"
   ]
 }
 
