@@ -1,15 +1,12 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import ru.mse.itmo.lama.language.psi.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElementVisitor;
+import org.jetbrains.annotations.NotNull;
+import ru.mse.itmo.lama.language.psi.LamaWTFBasicExpression;
+import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
 
 public abstract class LamaWTFBasicExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFBasicExpression {
 

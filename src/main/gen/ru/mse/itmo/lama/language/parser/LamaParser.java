@@ -1,15 +1,16 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.parser;
 
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.LightPsiParser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
-import com.intellij.lang.LightPsiParser;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
+
+import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
+import static ru.mse.itmo.lama.language.psi.ref.impl.LamaParsersUtil.*;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class LamaParser implements PsiParser, LightPsiParser {

@@ -19,6 +19,10 @@
                                implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Lama"
                                        implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
+<!--        <psi.referenceContributor language="Lama" implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
+        <psi.referenceContributor language="Lama" implementation="ru.mse.itmo.lama.language.psi.ref.LamaJavaReferenceContributor"/>
+        <lang.findUsagesProvider language="Lama"
+                                 implementationClass="ru.mse.itmo.lama.language.psi.ref.LamaFindUsagesProvider"/>
     </extensions>
 
     <actions>

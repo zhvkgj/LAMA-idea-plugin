@@ -1,9 +1,10 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi;
 
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import org.jetbrains.annotations.NotNull;
+import ru.mse.itmo.lama.language.psi.ref.LamaElem;
 
 public class LamaWTFVisitor extends PsiElementVisitor {
 
@@ -60,7 +61,7 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitExpression(@NotNull LamaWTFExpression o) {
-    visitPsiElement(o);
+    visitLamaElem(o);
   }
 
   public void visitForExpression(@NotNull LamaWTFForExpression o) {
@@ -161,6 +162,10 @@ public class LamaWTFVisitor extends PsiElementVisitor {
 
   public void visitWildcardPattern(@NotNull LamaWTFWildcardPattern o) {
     visitPsiElement(o);
+  }
+
+  public void visitLamaElem(@NotNull LamaElem o) {
+    visitElement(o);
   }
 
   public void visitPsiElement(@NotNull PsiElement o) {
