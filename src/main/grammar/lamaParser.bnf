@@ -78,6 +78,13 @@
     wildcard='_'
 
     // Section: infix operators
+    disj="!!"
+    conj="&&"
+    eq="regexp:(==|!=)"
+    comp="regexp:(<=|<|>|>=)"
+    add="regexp:[+-]"
+    mul="regexp:[*/%]"
+
     infixop="regexp:[+*/%$#@!|&^?<>:=\\-]+"
   ]
 }
@@ -101,7 +108,11 @@ variableDefinitionItem ::= lident [ '=' basicExpression ]
 
 functionDefinition ::= [ public ] fun lident lb functionArguments rb functionBody
 
-functionArguments ::= [ lident ( comma lident ) * ]
+functionArguments ::= [ functionArgument ( comma functionArgument ) * ]
+
+functionArgument ::=
+    lident |
+    pattern
 
 functionBody ::= curlylb scopeExpression curlyrb
 
@@ -118,11 +129,25 @@ level ::= [ at | before | after ] infixop
 
 expression ::= basicExpression [ semicolon expression ]
 
-basicExpression ::= binaryExpression | binaryOperand
+basicExpression ::= disjunction
 
-binaryExpression ::= basicExpression infixop basicExpression {extends=basicExpression}
+disjunction ::= conjunction ( disj conjunction ) *
 
-binaryOperand ::= postfixExpression {extends=basicExpression}
+conjunction ::= equality ( conj equality ) *
+
+equality ::= comparison (eq comparison ) *
+
+comparison ::= additive ( comp additive ) *
+
+additive ::= multiplicative ( add multiplicative ) *
+
+multiplicative ::= customOperatorExpression ( mul customOperatorExpression ) *
+
+customOperatorExpression ::= dotNotation ( infixop dotNotation ) *
+
+dotNotation ::= postfixExpression ( dot (functionCall | lident) ) *
+
+//multiplicative ::= postfixExpression
 
 postfixExpression ::=
     primary      |
