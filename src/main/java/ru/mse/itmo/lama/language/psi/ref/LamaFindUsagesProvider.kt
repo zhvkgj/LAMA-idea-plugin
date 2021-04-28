@@ -18,7 +18,7 @@ class LamaFindUsagesProvider : FindUsagesProvider {
         return DefaultWordsScanner(LamaLexerAdapter(),
                 TokenSet.create(LamaTypes.LIDENT),
                 TokenSet.create(LamaTypes.DO),
-                TokenSet.EMPTY)
+                TokenSet.create(LamaTypes.CHAR))
     }
 
     override fun canFindUsagesFor(psiElement: PsiElement): Boolean {
