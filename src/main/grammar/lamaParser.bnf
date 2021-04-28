@@ -13,7 +13,7 @@
   tokenTypeClass="ru.mse.itmo.lama.language.psi.LamaTokenType"
 
   tokens=[
-    // Section keywords
+    // Section: keywords
     after='after'
     esac='esac'
     infixl='infixl'
@@ -48,85 +48,197 @@
     infix='infix'
     str='str'
 
-    // Section 2.1.1
+    // Section: whitespaces and comments
     space='regexp:\s+'
-    singleComment='regexp:--'
+    singleComment='regexp:--[^\r\n]*'
     multiComment='regexp:\(\*.*?\*\)'
 
-    // Section 2.1.2
+    // Section: general tokens
     uident='regexp:[A-Z][a-zA-Z_0-9]*'
     lident='regexp:[a-z][a-zA-Z_0-9]*'
     decimal='regexp:-?[0-9]+'
     string="regexp:\"([^\"\\]|\\.)*\""
     char="regexp:'([^']|''|\n|\t)'"
 
+    // Section: delimiters
+    dot='.'
+    comma=','
+    lb='('
+    rb=')'
+    curlylb='{'
+    curlyrb='}'
+    semicolon=';'
+    sharp='#'
+    hence='->'
+    alt='|'
+
+    // Section
+    squarelb='['
+    squarerb=']'
+    wildcard='_'
+
+    // Section: infix operators
+    disj="!!"
+    conj="&&"
+    eq="regexp:(==|!=)"
+    comp="regexp:(<=|<|>|>=)"
+    add="regexp:[+-]"
+    mul="regexp:[*/%]"
+
     infixop="regexp:[+*/%$#@!|&\^?<>:=\\-]+"
   ]
-//
-//  name(".*expr")='expression'
-//  extends(".*expr")=expr
 }
 
-compilation_unit ::= importRule * scopeExpression
-importRule ::= import uident ';'
-scopeExpression ::= definition * [expression]
-definition ::= variableDefinition | functionDefinition | infixDefinition
-variableDefinition ::= (var | public) variableDefinitionSeq ';'
-variableDefinitionSeq ::= variableDefinitionItem (',' variableDefinitionItem) *
-variableDefinitionItem ::= lident ['=' expression]
-functionDefinition ::= [public] fun lident '(' functionArguments ')' functionBody
-functionArguments ::= [lident (',' lident) *]
-functionBody ::= '{' scopeExpression '}'
+compilationUnit ::= importRule * scopeExpression
 
-infixDefinition ::= infixHead '(' functionArguments ')' functionBody
-infixHead ::= [public] infixity infixop level
-infixity ::= infix | infixl | infixr
-level ::= [at | before | after] infixop
+importRule ::= import uident semicolon
 
-// TODO
-expression ::= primary
+scopeExpression ::= definition * [ expression ]
 
+definition ::=
+    variableDefinition
+    | functionDefinition
+    | infixDefinition
+
+variableDefinition ::= ( var | public ) variableDefinitionSeq semicolon
+
+variableDefinitionSeq ::= variableDefinitionItem ( comma variableDefinitionItem ) *
+
+variableDefinitionItem ::= lident [ '=' basicExpression ]
+
+functionDefinition ::= [ public ] fun lident lb functionArguments rb functionBody
+
+functionArguments ::= [ functionArgument ( comma functionArgument ) * ]
+
+functionArgument ::=
+    lident |
+    pattern
+
+functionBody ::= curlylb scopeExpression curlyrb
+
+infixDefinition ::= infixHead lb functionArguments rb functionBody
+
+infixHead ::= [ public ] infixity infixop level
+
+infixity ::=
+    infix
+    | infixl
+    | infixr
+
+level ::= [ at | before | after ] infixop
+
+expression ::= basicExpression [ semicolon expression ]
+
+basicExpression ::= disjunction
+
+disjunction ::= conjunction ( disj conjunction ) *
+
+conjunction ::= equality ( conj equality ) *
+
+equality ::= comparison (eq comparison ) *
+
+comparison ::= additive ( comp additive ) *
+
+additive ::= multiplicative ( add multiplicative ) *
+
+multiplicative ::= customOperatorExpression ( mul customOperatorExpression ) *
+
+customOperatorExpression ::= dotNotation ( infixop dotNotation ) *
+
+dotNotation ::= postfixExpression ( dot (functionCall | lident) ) *
+
+//multiplicative ::= postfixExpression
+
+postfixExpression ::=
+    primary      |
+    functionCall |
+    arrayIndexing
+
+functionCall ::=
+    postfixExpression lb [ expression ( comma expression ) * ] rb {extends=postfixExpression}
+
+arrayIndexing ::=
+    postfixExpression squarelb expression squarerb {extends=postfixExpression}
+
+// TODO: case expression
 primary ::=
-    decimal            |
-    string             |
-    char               |
-    lident             |
-    listExpression     |
-    arrayExpression    |
-    sExpression        |
-    ifExpression       |
-    whileDoExpression
+    decimal                 |
+    string                  |
+    char                    |
+    lident                  |
+    true                    |
+    false                   |
+    infix                   |
+    skip                    |
+    lb scopeExpression rb   |
+    listExpression          |
+    arrayExpression         |
+    sExpression             |
+    ifExpression            |
+    whileDoExpression       |
+    doWhileExpression       |
+    forExpression           |
+    caseExpression
+    {extends=postfixExpression}
 
 listExpression ::=
-    "[" [expression ("," expression)*] "]"
+    curlylb [ expression ( comma expression ) * ] curlyrb
 
 arrayExpression ::=
-    "{" [expression ("," expression)*] "}"
+    squarelb [ expression ( comma expression ) * ] squarerb
 
 sExpression ::=
-    uident ["(" [expression ("," expression)*] ")"]
+    uident [ lb expression [ ( comma expression ) * ] rb ]
 
 ifExpression ::=
     if expression then scopeExpression [ elsePart ] fi
 
-elsePart ::= elif expression then scopeExpression [ elsePart ] | else scopeExpression
+elsePart ::=
+    elif expression then scopeExpression [ elsePart ] |
+    else scopeExpression
 
 whileDoExpression ::= while expression do scopeExpression od
 
-//private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
-//
-//property ::= (uident|lident) '=' expr  {pin=2}
-//private property_recover ::= !(';' | id '=')
-//
-//expr ::= factor plus_expr *
-//left plus_expr ::= plus_op factor
-//private plus_op ::= '+'|'-'
-//private factor ::= primary mul_expr *
-//left mul_expr  ::= mul_op primary
-//private mul_op ::= '*'|'/'
-//private primary ::= primary_inner factorial_expr ?
-//left factorial_expr ::= '!'
-//private primary_inner ::= literal_expr | ref_expr | paren_expr
-//paren_expr ::= '(' expr ')' {pin=1}
-//ref_expr ::= id
-//literal_expr ::= number | string | float | char
+doWhileExpression ::= do scopeExpression while expression od
+
+forExpression ::=
+    for scopeExpression comma expression comma expression do scopeExpression od
+
+caseExpression ::= case expression of caseBranches esac
+
+caseBranches ::= caseBranch [ ( alt caseBranch ) * ]
+
+caseBranch ::= pattern hence scopeExpression
+
+pattern ::=
+    consPattern
+    | simplePattern
+
+consPattern ::= simplePattern  ':' pattern
+
+simplePattern ::=
+    wildcardPattern
+    | sExprPattern
+    | arrayPattern
+    | listPattern
+    | lident [ '@' pattern ]
+    | [ '-' ] decimal
+    | string
+    | char
+    | true
+    | false
+    | sharp box
+    | sharp val
+    | sharp str
+    | sharp array
+    | sharp sexp
+    | sharp fun
+    | lb pattern rb
+
+wildcardPattern ::= wildcard
+
+sExprPattern ::= uident [ lb pattern ( comma pattern ) * rb ]
+
+arrayPattern ::= squarelb [ pattern ( comma pattern ) * ] squarerb
+
+listPattern ::= curlylb [ pattern ( comma pattern ) * ] curlyrb

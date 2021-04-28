@@ -5,10 +5,19 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LamaWTFPrimary extends PsiElement {
+public interface LamaWTFPrimary extends LamaWTFPostfixExpression {
 
   @Nullable
   LamaWTFArrayExpression getArrayExpression();
+
+  @Nullable
+  LamaWTFCaseExpression getCaseExpression();
+
+  @Nullable
+  LamaWTFDoWhileExpression getDoWhileExpression();
+
+  @Nullable
+  LamaWTFForExpression getForExpression();
 
   @Nullable
   LamaWTFIfExpression getIfExpression();
@@ -18,6 +27,9 @@ public interface LamaWTFPrimary extends PsiElement {
 
   @Nullable
   LamaWTFSExpression getSExpression();
+
+  @Nullable
+  LamaWTFScopeExpression getScopeExpression();
 
   @Nullable
   LamaWTFWhileDoExpression getWhileDoExpression();

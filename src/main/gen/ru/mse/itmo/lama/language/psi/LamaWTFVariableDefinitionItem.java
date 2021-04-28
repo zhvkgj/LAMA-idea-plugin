@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface LamaWTFVariableDefinitionItem extends PsiElement {
 
   @Nullable
-  LamaWTFExpression getExpression();
+  LamaWTFBasicExpression getBasicExpression();
 
   @NotNull
   PsiElement getLident();

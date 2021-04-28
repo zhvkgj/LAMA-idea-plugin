@@ -8,15 +8,15 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import ru.mse.itmo.lama.language.psi.*;
 
-public class LamaWTFPrimaryImplWTF extends ASTWrapperPsiElement implements LamaWTFPrimary {
+public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF implements LamaWTFPrimary {
 
   public LamaWTFPrimaryImplWTF(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull LamaWTFVisitor visitor) {
     visitor.visitPrimary(this);
   }
@@ -35,6 +35,24 @@ public class LamaWTFPrimaryImplWTF extends ASTWrapperPsiElement implements LamaW
 
   @Override
   @Nullable
+  public LamaWTFCaseExpression getCaseExpression() {
+    return findChildByClass(LamaWTFCaseExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public LamaWTFDoWhileExpression getDoWhileExpression() {
+    return findChildByClass(LamaWTFDoWhileExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public LamaWTFForExpression getForExpression() {
+    return findChildByClass(LamaWTFForExpression.class);
+  }
+
+  @Override
+  @Nullable
   public LamaWTFIfExpression getIfExpression() {
     return findChildByClass(LamaWTFIfExpression.class);
   }
@@ -49,6 +67,12 @@ public class LamaWTFPrimaryImplWTF extends ASTWrapperPsiElement implements LamaW
   @Nullable
   public LamaWTFSExpression getSExpression() {
     return findChildByClass(LamaWTFSExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public LamaWTFScopeExpression getScopeExpression() {
+    return findChildByClass(LamaWTFScopeExpression.class);
   }
 
   @Override
