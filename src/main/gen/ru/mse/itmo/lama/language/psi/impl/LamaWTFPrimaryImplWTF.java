@@ -53,6 +53,18 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
 
   @Override
   @Nullable
+  public LamaWTFFunctionArguments getFunctionArguments() {
+    return findChildByClass(LamaWTFFunctionArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public LamaWTFFunctionBody getFunctionBody() {
+    return findChildByClass(LamaWTFFunctionBody.class);
+  }
+
+  @Override
+  @Nullable
   public LamaWTFIfExpression getIfExpression() {
     return findChildByClass(LamaWTFIfExpression.class);
   }
@@ -77,6 +89,12 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
 
   @Override
   @Nullable
+  public LamaWTFSyntaxExpression getSyntaxExpression() {
+    return findChildByClass(LamaWTFSyntaxExpression.class);
+  }
+
+  @Override
+  @Nullable
   public LamaWTFWhileDoExpression getWhileDoExpression() {
     return findChildByClass(LamaWTFWhileDoExpression.class);
   }
@@ -91,6 +109,12 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
   @Nullable
   public PsiElement getDecimal() {
     return findChildByType(DECIMAL);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getInfixop() {
+    return findChildByType(INFIXOP);
   }
 
   @Override

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.mse.itmo.lama.language.psi.LamaWTFBasicExpression;
 import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
 
-public abstract class LamaWTFBasicExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFBasicExpression {
+public class LamaWTFBasicExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFBasicExpression {
 
   public LamaWTFBasicExpressionImplWTF(@NotNull ASTNode node) {
     super(node);
@@ -22,6 +22,12 @@ public abstract class LamaWTFBasicExpressionImplWTF extends ASTWrapperPsiElement
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof LamaWTFVisitor) accept((LamaWTFVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public LamaWTFDisjunction getDisjunction() {
+    return findNotNullChildByClass(LamaWTFDisjunction.class);
   }
 
 }

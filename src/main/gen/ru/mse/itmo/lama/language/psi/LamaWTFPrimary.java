@@ -20,6 +20,12 @@ public interface LamaWTFPrimary extends LamaWTFPostfixExpression {
   LamaWTFForExpression getForExpression();
 
   @Nullable
+  LamaWTFFunctionArguments getFunctionArguments();
+
+  @Nullable
+  LamaWTFFunctionBody getFunctionBody();
+
+  @Nullable
   LamaWTFIfExpression getIfExpression();
 
   @Nullable
@@ -32,6 +38,9 @@ public interface LamaWTFPrimary extends LamaWTFPostfixExpression {
   LamaWTFScopeExpression getScopeExpression();
 
   @Nullable
+  LamaWTFSyntaxExpression getSyntaxExpression();
+
+  @Nullable
   LamaWTFWhileDoExpression getWhileDoExpression();
 
   @Nullable
@@ -39,6 +48,9 @@ public interface LamaWTFPrimary extends LamaWTFPostfixExpression {
 
   @Nullable
   PsiElement getDecimal();
+
+  @Nullable
+  PsiElement getInfixop();
 
   @Nullable
   PsiElement getLident();

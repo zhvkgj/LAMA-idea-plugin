@@ -8,6 +8,10 @@ import ru.mse.itmo.lama.language.psi.ref.LamaElem;
 
 public class LamaWTFVisitor extends PsiElementVisitor {
 
+  public void visitAdditive(@NotNull LamaWTFAdditive o) {
+    visitPsiElement(o);
+  }
+
   public void visitArrayExpression(@NotNull LamaWTFArrayExpression o) {
     visitPsiElement(o);
   }
@@ -24,14 +28,6 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitBinaryExpression(@NotNull LamaWTFBinaryExpression o) {
-    visitBasicExpression(o);
-  }
-
-  public void visitBinaryOperand(@NotNull LamaWTFBinaryOperand o) {
-    visitBasicExpression(o);
-  }
-
   public void visitCaseBranch(@NotNull LamaWTFCaseBranch o) {
     visitPsiElement(o);
   }
@@ -44,7 +40,19 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitComparison(@NotNull LamaWTFComparison o) {
+    visitPsiElement(o);
+  }
+
+  public void visitConjunction(@NotNull LamaWTFConjunction o) {
+    visitPsiElement(o);
+  }
+
   public void visitConsPattern(@NotNull LamaWTFConsPattern o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCustomOperatorExpression(@NotNull LamaWTFCustomOperatorExpression o) {
     visitPsiElement(o);
   }
 
@@ -52,11 +60,23 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitLamaElem(o);
   }
 
+  public void visitDisjunction(@NotNull LamaWTFDisjunction o) {
+    visitPsiElement(o);
+  }
+
   public void visitDoWhileExpression(@NotNull LamaWTFDoWhileExpression o) {
     visitPsiElement(o);
   }
 
+  public void visitDotNotation(@NotNull LamaWTFDotNotation o) {
+    visitPsiElement(o);
+  }
+
   public void visitElsePart(@NotNull LamaWTFElsePart o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEquality(@NotNull LamaWTFEquality o) {
     visitPsiElement(o);
   }
 
@@ -65,6 +85,10 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitForExpression(@NotNull LamaWTFForExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFunctionArgument(@NotNull LamaWTFFunctionArgument o) {
     visitPsiElement(o);
   }
 
@@ -116,6 +140,10 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMultiplicative(@NotNull LamaWTFMultiplicative o) {
+    visitPsiElement(o);
+  }
+
   public void visitPattern(@NotNull LamaWTFPattern o) {
     visitPsiElement(o);
   }
@@ -141,6 +169,26 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitSimplePattern(@NotNull LamaWTFSimplePattern o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxBinding(@NotNull LamaWTFSyntaxBinding o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxExpression(@NotNull LamaWTFSyntaxExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxPostfix(@NotNull LamaWTFSyntaxPostfix o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxPrimary(@NotNull LamaWTFSyntaxPrimary o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxSeq(@NotNull LamaWTFSyntaxSeq o) {
     visitPsiElement(o);
   }
 

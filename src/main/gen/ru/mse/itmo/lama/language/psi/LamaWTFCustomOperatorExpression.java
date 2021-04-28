@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LamaWTFBasicExpression extends PsiElement {
+public interface LamaWTFCustomOperatorExpression extends PsiElement {
 
   @NotNull
-  LamaWTFDisjunction getDisjunction();
+  List<LamaWTFDotNotation> getDotNotationList();
 
 }

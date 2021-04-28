@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LamaWTFBasicExpression extends PsiElement {
+public interface LamaWTFSyntaxPrimary extends PsiElement {
 
   @NotNull
-  LamaWTFDisjunction getDisjunction();
+  List<LamaWTFExpression> getExpressionList();
+
+  @Nullable
+  LamaWTFSyntaxExpression getSyntaxExpression();
+
+  @Nullable
+  PsiElement getLident();
 
 }

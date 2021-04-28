@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LamaWTFBinaryExpression extends LamaWTFBasicExpression {
+public interface LamaWTFAdditive extends PsiElement {
 
   @NotNull
-  List<LamaWTFBasicExpression> getBasicExpressionList();
-
-  @NotNull
-  PsiElement getInfixop();
+  List<LamaWTFMultiplicative> getMultiplicativeList();
 
 }

@@ -24,4 +24,10 @@ public class LamaWTFFunctionArgumentsImplWTF extends ASTWrapperPsiElement implem
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<LamaWTFFunctionArgument> getFunctionArgumentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LamaWTFFunctionArgument.class);
+  }
+
 }

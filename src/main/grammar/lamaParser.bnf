@@ -50,6 +50,11 @@
     infix='infix'
     str='str'
 
+    // operators
+    hence='->'
+    alt='|'
+    sharp='#'
+
     // Section 2.1.1
     space='regexp:\s+'
     singleComment='regexp:--'
@@ -92,7 +97,11 @@ variableDefinitionItem ::= lident [ '=' basicExpression ]
 
 functionDefinition ::= [ public ] fun lident '(' functionArguments ')' functionBody
 
-functionArguments ::= [ lident ( ',' lident ) * ]
+functionArguments ::= [ functionArgument ( ',' functionArgument ) * ]
+
+functionArgument ::=
+    lident |
+    pattern
 
 functionBody ::= '{' scopeExpression '}'
 
@@ -107,13 +116,27 @@ infixity ::=
 
 level ::= [ at | before | after ] infixop
 
-expression ::= basicExpression [';' expression]
+expression ::= basicExpression [ ';' expression ]
 
-basicExpression ::= binaryExpression | binaryOperand
+basicExpression ::= disjunction
 
-binaryExpression ::= basicExpression infixop basicExpression {extends=basicExpression}
+disjunction ::= conjunction ( '!!' conjunction ) *
 
-binaryOperand ::= postfixExpression {extends=basicExpression}
+conjunction ::= equality ( '&&' equality ) *
+
+equality ::= comparison (('==' | '!=') comparison ) *
+
+comparison ::= additive ( ('<' | '>' | '<=' | '>=') additive ) *
+
+additive ::= multiplicative ( ('+' | '-') multiplicative ) *
+
+multiplicative ::= customOperatorExpression ( ('*' | '/' | '%') customOperatorExpression ) *
+
+customOperatorExpression ::= dotNotation ( infixop dotNotation ) *
+
+dotNotation ::= postfixExpression ( '.' (functionCall | lident) ) *
+
+//multiplicative ::= postfixExpression
 
 postfixExpression ::=
     primary      |
@@ -121,12 +144,11 @@ postfixExpression ::=
     arrayIndexing
 
 functionCall ::=
-    postfixExpression '(' [ expression (',' expression)* ] ')' {extends=postfixExpression}
+    postfixExpression '(' [ expression ( ',' expression ) * ] ')' {extends=postfixExpression}
 
 arrayIndexing ::=
     postfixExpression '[' expression ']' {extends=postfixExpression}
 
-// TODO: case expression
 primary ::=
     decimal                 |
     string                  |
@@ -134,9 +156,11 @@ primary ::=
     lident                  |
     true                    |
     false                   |
-    infix                   |
+    infix infixop           |
+    fun '(' functionArguments ')' functionBody |
     skip                    |
-    '(' scopeExpression ')' |
+    syntaxExpression        |
+    '(' scopeExpression ')'   |
     listExpression          |
     arrayExpression         |
     sExpression             |
@@ -148,13 +172,13 @@ primary ::=
     {extends=postfixExpression}
 
 listExpression ::=
-    '{' [expression (',' expression)*] '}'
+    '{' [ expression ( ',' expression ) * ] '}'
 
 arrayExpression ::=
-    "[" [expression ("," expression)*] "]"
+    '[' [ expression ( ',' expression ) * ] ']'
 
 sExpression ::=
-    uident [ '(' expression [ (',' expression)* ] ')' ]
+    uident [ '(' expression [ ( ',' expression ) * ] ')' ]
 
 ifExpression ::=
     if expression then scopeExpression [ elsePart ] fi
@@ -170,11 +194,11 @@ doWhileExpression ::= do scopeExpression while expression od
 forExpression ::=
     for scopeExpression ',' expression ',' expression do scopeExpression od
 
-caseExpression ::= case expression 'of' caseBranches esac
+caseExpression ::= case expression of caseBranches esac
 
-caseBranches ::= caseBranch [ ( '|' caseBranch ) * ]
+caseBranches ::= caseBranch [ ( alt caseBranch ) * ]
 
-caseBranch ::= pattern '->' scopeExpression
+caseBranch ::= pattern hence scopeExpression
 
 pattern ::=
     consPattern
@@ -193,12 +217,12 @@ simplePattern ::=
     | char
     | true
     | false
-    | '#' box
-    | '#' val
-    | '#' str
-    | '#' array
-    | '#' sexp
-    | '#' fun
+    | sharp box
+    | sharp val
+    | sharp str
+    | sharp array
+    | sharp sexp
+    | sharp fun
     | '(' pattern ')'
 
 wildcardPattern ::= '_'
@@ -209,21 +233,15 @@ arrayPattern ::= '[' [ pattern ( ',' pattern ) * ] ']'
 
 listPattern ::= '{' [ pattern ( ',' pattern ) * ] '}'
 
+syntaxExpression ::= syntax '(' syntaxSeq (alt syntaxSeq ) * ')'
 
-//private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
-//
-//property ::= (uident|lident) '=' expr  {pin=2}
-//private property_recover ::= !(';' | id '=')
-//
-//expr ::= factor plus_expr *
-//left plus_expr ::= plus_op factor
-//private plus_op ::= '+'|'-'
-//private factor ::= primary mul_expr *
-//left mul_expr  ::= mul_op primary
-//private mul_op ::= '*'|'/'
-//private primary ::= primary_inner factorial_expr ?
-//left factorial_expr ::= '!'
-//private primary_inner ::= literal_expr | ref_expr | paren_expr
-//paren_expr ::= '(' expr ')' {pin=1}
-//ref_expr ::= id
-//literal_expr ::= number | string | float | char
+syntaxSeq ::= syntaxBinding + [ '{' expression '}' ]
+
+syntaxBinding ::= [ '-' ] [ pattern '=' ] syntaxPostfix
+
+syntaxPostfix ::= syntaxPrimary [ ('*' | '+' | '?' ) ]
+
+syntaxPrimary ::=
+    lident ( '[' [ expression ( ',' expression ) * ] ']' ) *
+    | '(' syntaxExpression ')'
+    | '$(' expression ')'
