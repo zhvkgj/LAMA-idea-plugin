@@ -7,6 +7,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.util.elementType
+import com.jetbrains.rd.util.LogLevel
+import com.jetbrains.rd.util.getLogger
 import ru.mse.itmo.lama.language.LamaLexerAdapter
 import ru.mse.itmo.lama.language.psi.LamaElementType
 import ru.mse.itmo.lama.language.psi.LamaTypes
@@ -22,11 +24,13 @@ class LamaFindUsagesProvider : FindUsagesProvider {
     }
 
     override fun canFindUsagesFor(psiElement: PsiElement): Boolean {
+        val ans = psiElement is PsiNamedElement
+        getLogger<LamaFindUsagesProvider>().log(LogLevel.Info, ans, null)
         return psiElement is PsiNamedElement
     }
 
     override fun getHelpId(psiElement: PsiElement): String? {
-        return psiElement.text
+        return null
     }
 
     override fun getType(element: PsiElement): String {

@@ -6,7 +6,6 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.util.ProcessingContext
 import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
 import ru.mse.itmo.lama.language.psi.LamaWTFExpression
-import ru.mse.itmo.lama.language.psi.LamaWTFVariableDefinition
 
 
 class LamaReferenceContributor : PsiReferenceContributor() {
@@ -17,25 +16,25 @@ class LamaReferenceContributor : PsiReferenceContributor() {
                 LamaFileReferenceProvider()
         )
 
-        registrar.registerReferenceProvider(
-                PlatformPatterns.psiElement(LamaWTFVariableDefinition::class.java),
-                object : PsiReferenceProvider() {
-                    override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
-                        val sym = element as LamaWTFVariableDefinition
-                        val value = sym.variableDefinitionSeq
-                        val range = value.textRange
-                        return arrayOf<PsiReference>(LamaReference(element, range))
-                    }
-                }
-        )
+//        registrar.registerReferenceProvider(
+//                PlatformPatterns.psiElement(LamaWTFPrimary::class.java),
+//                object : PsiReferenceProvider() {
+//                    override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
+//                        val sym = element as LamaWTFPrimary
+//                        val value = sym
+//                        val range = value.textRange
+//                        return arrayOf<PsiReference>(LamaReference(element, range))
+//                    }
+//                }
+//        )
+
     }
 }
 
 private class LamaFileReferenceProvider: PsiReferenceProvider() {
     override fun getReferencesByElement(element: PsiElement, context: ProcessingContext) : Array<PsiReference> {
-        val sym = element as LamaWTFExpression
-//        if (sym is LamAWTF)
-        val value = sym.basicExpression
+        val sym = element as LamaWTFDefinition
+        val value = sym.nameIdentifier ?: return emptyArray()
 
         val range = value.textRange
         return arrayOf<PsiReference>(LamaReference(value, range))
