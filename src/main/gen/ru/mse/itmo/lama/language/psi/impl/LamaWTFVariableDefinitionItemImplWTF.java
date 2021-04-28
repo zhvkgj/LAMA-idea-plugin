@@ -29,8 +29,8 @@ public class LamaWTFVariableDefinitionItemImplWTF extends ASTWrapperPsiElement i
 
   @Override
   @Nullable
-  public LamaWTFExpression getExpression() {
-    return findChildByClass(LamaWTFExpression.class);
+  public LamaWTFBasicExpression getBasicExpression() {
+    return findChildByClass(LamaWTFBasicExpression.class);
   }
 
   @Override

@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import ru.mse.itmo.lama.language.psi.*;
 
-public class LamaWTFExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFExpression {
+public class LamaWTFBinaryOperandImplWTF extends LamaWTFBasicExpressionImplWTF implements LamaWTFBinaryOperand {
 
-  public LamaWTFExpressionImplWTF(@NotNull ASTNode node) {
+  public LamaWTFBinaryOperandImplWTF(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull LamaWTFVisitor visitor) {
-    visitor.visitExpression(this);
+    visitor.visitBinaryOperand(this);
   }
 
   @Override
@@ -29,14 +29,8 @@ public class LamaWTFExpressionImplWTF extends ASTWrapperPsiElement implements La
 
   @Override
   @NotNull
-  public LamaWTFBasicExpression getBasicExpression() {
-    return findNotNullChildByClass(LamaWTFBasicExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public LamaWTFExpression getExpression() {
-    return findChildByClass(LamaWTFExpression.class);
+  public LamaWTFPostfixExpression getPostfixExpression() {
+    return findNotNullChildByClass(LamaWTFPostfixExpression.class);
   }
 
 }

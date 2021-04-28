@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LamaWTFExpression extends PsiElement {
+public interface LamaWTFSExprPattern extends PsiElement {
 
   @NotNull
-  LamaWTFBasicExpression getBasicExpression();
+  List<LamaWTFPattern> getPatternList();
 
-  @Nullable
-  LamaWTFExpression getExpression();
+  @NotNull
+  PsiElement getUident();
 
 }

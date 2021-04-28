@@ -67,21 +67,39 @@
 //  extends(".*expr")=expr
 }
 
-compilation_unit ::= importRule * scopeExpression
+compilationUnit ::= importRule * scopeExpression
+
 importRule ::= import uident ';'
-scopeExpression ::= definition * [expression]
-definition ::= variableDefinition | functionDefinition | infixDefinition
-variableDefinition ::= (var | public) variableDefinitionSeq ';'
-variableDefinitionSeq ::= variableDefinitionItem (',' variableDefinitionItem) *
-variableDefinitionItem ::= lident ['=' basicExpression]
-functionDefinition ::= [public] fun lident '(' functionArguments ')' functionBody
-functionArguments ::= [lident (',' lident) *]
+
+scopeExpression ::= definition * [ expression ]
+
+definition ::=
+    variableDefinition
+    | functionDefinition
+    | infixDefinition
+
+variableDefinition ::= ( var | public ) variableDefinitionSeq ';'
+
+variableDefinitionSeq ::= variableDefinitionItem ( ',' variableDefinitionItem ) *
+
+variableDefinitionItem ::= lident [ '=' basicExpression ]
+
+functionDefinition ::= [ public ] fun lident '(' functionArguments ')' functionBody
+
+functionArguments ::= [ lident ( ',' lident ) * ]
+
 functionBody ::= '{' scopeExpression '}'
 
 infixDefinition ::= infixHead '(' functionArguments ')' functionBody
-infixHead ::= [public] infixity infixop level
-infixity ::= infix | infixl | infixr
-level ::= [at | before | after] infixop
+
+infixHead ::= [ public ] infixity infixop level
+
+infixity ::=
+    infix
+    | infixl
+    | infixr
+
+level ::= [ at | before | after ] infixop
 
 expression ::= basicExpression [';' expression]
 
@@ -119,7 +137,8 @@ primary ::=
     ifExpression            |
     whileDoExpression       |
     doWhileExpression       |
-    forExpression
+    forExpression           |
+    caseExpression
     {extends=postfixExpression}
 
 listExpression ::=
@@ -144,6 +163,46 @@ doWhileExpression ::= do scopeExpression while expression od
 
 forExpression ::=
     for scopeExpression ',' expression ',' expression do scopeExpression od
+
+caseExpression ::= case expression 'of' caseBranches esac
+
+caseBranches ::= caseBranch [ ( '|' caseBranch ) * ]
+
+caseBranch ::= pattern '->' scopeExpression
+
+pattern ::=
+    consPattern
+    | simplePattern
+
+consPattern ::= simplePattern  ':' pattern
+
+simplePattern ::=
+    wildcardPattern
+    | sExprPattern
+    | arrayPattern
+    | listPattern
+    | lident [ '@' pattern ]
+    | [ '-' ] decimal
+    | string
+    | char
+    | true
+    | false
+    | '#' box
+    | '#' val
+    | '#' str
+    | '#' array
+    | '#' sexp
+    | '#' fun
+    | '(' pattern ')'
+
+wildcardPattern ::= '_'
+
+sExprPattern ::= uident [ '(' pattern ( ',' pattern ) * ')' ]
+
+arrayPattern ::= '[' [ pattern ( ',' pattern ) * ] ']'
+
+listPattern ::= '{' [ pattern ( ',' pattern ) * ] '}'
+
 
 //private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
 //
