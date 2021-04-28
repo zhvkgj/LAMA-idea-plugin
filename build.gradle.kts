@@ -30,6 +30,7 @@ dependencies {
 intellij {
     version = "IC-2020.1"
     pluginName = myPluginName
+    setPlugins("com.intellij.java")
 }
 
 

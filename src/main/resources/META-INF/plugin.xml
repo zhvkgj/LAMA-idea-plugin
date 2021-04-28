@@ -11,6 +11,7 @@
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Lama File" implementationClass="ru.mse.itmo.lama.language.LamaFileType"
@@ -20,6 +21,8 @@
         <lang.syntaxHighlighterFactory language="Lama"
                                        implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
         <lang.commenter language="Lama" implementationClass="ru.mse.itmo.lama.editor.LamaCommenter"/>
+        <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.LamaAnnotator"/>
+
         <!--        <psi.referenceContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
     </extensions>
 
