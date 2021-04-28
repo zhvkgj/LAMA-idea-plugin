@@ -171,6 +171,26 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSyntaxBinding(@NotNull LamaWTFSyntaxBinding o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxExpression(@NotNull LamaWTFSyntaxExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxPostfix(@NotNull LamaWTFSyntaxPostfix o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxPrimary(@NotNull LamaWTFSyntaxPrimary o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSyntaxSeq(@NotNull LamaWTFSyntaxSeq o) {
+    visitPsiElement(o);
+  }
+
   public void visitVariableDefinition(@NotNull LamaWTFVariableDefinition o) {
     visitPsiElement(o);
   }

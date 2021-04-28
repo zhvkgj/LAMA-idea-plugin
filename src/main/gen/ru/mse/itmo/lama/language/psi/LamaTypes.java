@@ -47,6 +47,11 @@ public interface LamaTypes {
   IElementType PRIMARY = new LamaElementType("PRIMARY");
   IElementType SCOPE_EXPRESSION = new LamaElementType("SCOPE_EXPRESSION");
   IElementType SIMPLE_PATTERN = new LamaElementType("SIMPLE_PATTERN");
+  IElementType SYNTAX_BINDING = new LamaElementType("SYNTAX_BINDING");
+  IElementType SYNTAX_EXPRESSION = new LamaElementType("SYNTAX_EXPRESSION");
+  IElementType SYNTAX_POSTFIX = new LamaElementType("SYNTAX_POSTFIX");
+  IElementType SYNTAX_PRIMARY = new LamaElementType("SYNTAX_PRIMARY");
+  IElementType SYNTAX_SEQ = new LamaElementType("SYNTAX_SEQ");
   IElementType S_EXPRESSION = new LamaElementType("S_EXPRESSION");
   IElementType S_EXPR_PATTERN = new LamaElementType("S_EXPR_PATTERN");
   IElementType VARIABLE_DEFINITION = new LamaElementType("VARIABLE_DEFINITION");
@@ -55,7 +60,6 @@ public interface LamaTypes {
   IElementType WHILE_DO_EXPRESSION = new LamaElementType("WHILE_DO_EXPRESSION");
   IElementType WILDCARD_PATTERN = new LamaElementType("WILDCARD_PATTERN");
 
-  IElementType ADD = new LamaTokenType("add");
   IElementType AFTER = new LamaTokenType("after");
   IElementType ALT = new LamaTokenType("|");
   IElementType ARRAY = new LamaTokenType("array");
@@ -64,18 +68,10 @@ public interface LamaTypes {
   IElementType BOX = new LamaTokenType("box");
   IElementType CASE = new LamaTokenType("case");
   IElementType CHAR = new LamaTokenType("char");
-  IElementType COMMA = new LamaTokenType(",");
-  IElementType COMP = new LamaTokenType("comp");
-  IElementType CONJ = new LamaTokenType("&&");
-  IElementType CURLYLB = new LamaTokenType("{");
-  IElementType CURLYRB = new LamaTokenType("}");
   IElementType DECIMAL = new LamaTokenType("decimal");
-  IElementType DISJ = new LamaTokenType("!!");
   IElementType DO = new LamaTokenType("do");
-  IElementType DOT = new LamaTokenType(".");
   IElementType ELIF = new LamaTokenType("elif");
   IElementType ELSE = new LamaTokenType("else");
-  IElementType EQ = new LamaTokenType("eq");
   IElementType ESAC = new LamaTokenType("esac");
   IElementType ETA = new LamaTokenType("eta");
   IElementType FALSE = new LamaTokenType("false");
@@ -90,21 +86,15 @@ public interface LamaTypes {
   IElementType INFIXOP = new LamaTokenType("infixop");
   IElementType INFIXR = new LamaTokenType("infixr");
   IElementType LAZY = new LamaTokenType("lazy");
-  IElementType LB = new LamaTokenType("(");
   IElementType LIDENT = new LamaTokenType("lident");
-  IElementType MUL = new LamaTokenType("mul");
   IElementType MULTICOMMENT = new LamaTokenType("multiComment");
   IElementType OD = new LamaTokenType("od");
   IElementType OF = new LamaTokenType("of");
   IElementType PUBLIC = new LamaTokenType("public");
-  IElementType RB = new LamaTokenType(")");
-  IElementType SEMICOLON = new LamaTokenType(";");
   IElementType SEXP = new LamaTokenType("sexp");
   IElementType SHARP = new LamaTokenType("#");
   IElementType SINGLECOMMENT = new LamaTokenType("singleComment");
   IElementType SKIP = new LamaTokenType("skip");
-  IElementType SQUARELB = new LamaTokenType("[");
-  IElementType SQUARERB = new LamaTokenType("]");
   IElementType STR = new LamaTokenType("str");
   IElementType STRING = new LamaTokenType("string");
   IElementType SYNTAX = new LamaTokenType("syntax");
@@ -114,7 +104,6 @@ public interface LamaTypes {
   IElementType VAL = new LamaTokenType("val");
   IElementType VAR = new LamaTokenType("var");
   IElementType WHILE = new LamaTokenType("while");
-  IElementType WILDCARD = new LamaTokenType("_");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -232,6 +221,21 @@ public interface LamaTypes {
       }
       else if (type == SIMPLE_PATTERN) {
         return new LamaWTFSimplePatternImplWTF(node);
+      }
+      else if (type == SYNTAX_BINDING) {
+        return new LamaWTFSyntaxBindingImplWTF(node);
+      }
+      else if (type == SYNTAX_EXPRESSION) {
+        return new LamaWTFSyntaxExpressionImplWTF(node);
+      }
+      else if (type == SYNTAX_POSTFIX) {
+        return new LamaWTFSyntaxPostfixImplWTF(node);
+      }
+      else if (type == SYNTAX_PRIMARY) {
+        return new LamaWTFSyntaxPrimaryImplWTF(node);
+      }
+      else if (type == SYNTAX_SEQ) {
+        return new LamaWTFSyntaxSeqImplWTF(node);
       }
       else if (type == S_EXPRESSION) {
         return new LamaWTFSExpressionImplWTF(node);

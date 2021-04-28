@@ -13,7 +13,7 @@
   tokenTypeClass="ru.mse.itmo.lama.language.psi.LamaTokenType"
 
   tokens=[
-    // Section: keywords
+    // Section keywords
     after='after'
     esac='esac'
     infixl='infixl'
@@ -48,50 +48,33 @@
     infix='infix'
     str='str'
 
-    // Section: whitespaces and comments
+    // operators
+    hence='->'
+    alt='|'
+    sharp='#'
+
+    // Section 2.1.1
     space='regexp:\s+'
-    singleComment='regexp:--[^\r\n]*'
+    singleComment='regexp:--'
     multiComment='regexp:\(\*.*?\*\)'
 
-    // Section: general tokens
+    // Section 2.1.2
     uident='regexp:[A-Z][a-zA-Z_0-9]*'
     lident='regexp:[a-z][a-zA-Z_0-9]*'
     decimal='regexp:-?[0-9]+'
     string="regexp:\"([^\"\\]|\\.)*\""
     char="regexp:'([^']|''|\n|\t)'"
 
-    // Section: delimiters
-    dot='.'
-    comma=','
-    lb='('
-    rb=')'
-    curlylb='{'
-    curlyrb='}'
-    semicolon=';'
-    sharp='#'
-    hence='->'
-    alt='|'
-
-    // Section
-    squarelb='['
-    squarerb=']'
-    wildcard='_'
-
-    // Section: infix operators
-    disj="!!"
-    conj="&&"
-    eq="regexp:(==|!=)"
-    comp="regexp:(<=|<|>|>=)"
-    add="regexp:[+-]"
-    mul="regexp:[*/%]"
-
     infixop="regexp:[+*/%$#@!|&\^?<>:=\\-]+"
   ]
+//
+//  name(".*expr")='expression'
+//  extends(".*expr")=expr
 }
 
 compilationUnit ::= importRule * scopeExpression
 
-importRule ::= import uident semicolon
+importRule ::= import uident ';'
 
 scopeExpression ::= definition * [ expression ]
 
@@ -100,23 +83,23 @@ definition ::=
     | functionDefinition
     | infixDefinition
 
-variableDefinition ::= ( var | public ) variableDefinitionSeq semicolon
+variableDefinition ::= ( var | public ) variableDefinitionSeq ';'
 
-variableDefinitionSeq ::= variableDefinitionItem ( comma variableDefinitionItem ) *
+variableDefinitionSeq ::= variableDefinitionItem ( ',' variableDefinitionItem ) *
 
 variableDefinitionItem ::= lident [ '=' basicExpression ]
 
-functionDefinition ::= [ public ] fun lident lb functionArguments rb functionBody
+functionDefinition ::= [ public ] fun lident '(' functionArguments ')' functionBody
 
-functionArguments ::= [ functionArgument ( comma functionArgument ) * ]
+functionArguments ::= [ functionArgument ( ',' functionArgument ) * ]
 
 functionArgument ::=
     lident |
     pattern
 
-functionBody ::= curlylb scopeExpression curlyrb
+functionBody ::= '{' scopeExpression '}'
 
-infixDefinition ::= infixHead lb functionArguments rb functionBody
+infixDefinition ::= infixHead '(' functionArguments ')' functionBody
 
 infixHead ::= [ public ] infixity infixop level
 
@@ -127,25 +110,25 @@ infixity ::=
 
 level ::= [ at | before | after ] infixop
 
-expression ::= basicExpression [ semicolon expression ]
+expression ::= basicExpression [ ';' expression ]
 
 basicExpression ::= disjunction
 
-disjunction ::= conjunction ( disj conjunction ) *
+disjunction ::= conjunction ( '!!' conjunction ) *
 
-conjunction ::= equality ( conj equality ) *
+conjunction ::= equality ( '&&' equality ) *
 
-equality ::= comparison (eq comparison ) *
+equality ::= comparison (('==' | '!=') comparison ) *
 
-comparison ::= additive ( comp additive ) *
+comparison ::= additive ( ('<' | '>' | '<=' | '>=') additive ) *
 
-additive ::= multiplicative ( add multiplicative ) *
+additive ::= multiplicative ( ('+' | '-') multiplicative ) *
 
-multiplicative ::= customOperatorExpression ( mul customOperatorExpression ) *
+multiplicative ::= customOperatorExpression ( ('*' | '/' | '%') customOperatorExpression ) *
 
 customOperatorExpression ::= dotNotation ( infixop dotNotation ) *
 
-dotNotation ::= postfixExpression ( dot (functionCall | lident) ) *
+dotNotation ::= postfixExpression ( '.' (functionCall | lident) ) *
 
 //multiplicative ::= postfixExpression
 
@@ -155,12 +138,11 @@ postfixExpression ::=
     arrayIndexing
 
 functionCall ::=
-    postfixExpression lb [ expression ( comma expression ) * ] rb {extends=postfixExpression}
+    postfixExpression '(' [ expression ( ',' expression ) * ] ')' {extends=postfixExpression}
 
 arrayIndexing ::=
-    postfixExpression squarelb expression squarerb {extends=postfixExpression}
+    postfixExpression '[' expression ']' {extends=postfixExpression}
 
-// TODO: case expression
 primary ::=
     decimal                 |
     string                  |
@@ -168,9 +150,11 @@ primary ::=
     lident                  |
     true                    |
     false                   |
-    infix                   |
+    infix infixop           |
+    fun '(' functionArguments ')' functionBody |
     skip                    |
-    lb scopeExpression rb   |
+    syntaxExpression        |
+    '(' scopeExpression ')'   |
     listExpression          |
     arrayExpression         |
     sExpression             |
@@ -182,13 +166,13 @@ primary ::=
     {extends=postfixExpression}
 
 listExpression ::=
-    curlylb [ expression ( comma expression ) * ] curlyrb
+    '{' [ expression ( ',' expression ) * ] '}'
 
 arrayExpression ::=
-    squarelb [ expression ( comma expression ) * ] squarerb
+    '[' [ expression ( ',' expression ) * ] ']'
 
 sExpression ::=
-    uident [ lb expression [ ( comma expression ) * ] rb ]
+    uident [ '(' expression [ ( ',' expression ) * ] ')' ]
 
 ifExpression ::=
     if expression then scopeExpression [ elsePart ] fi
@@ -202,7 +186,7 @@ whileDoExpression ::= while expression do scopeExpression od
 doWhileExpression ::= do scopeExpression while expression od
 
 forExpression ::=
-    for scopeExpression comma expression comma expression do scopeExpression od
+    for scopeExpression ',' expression ',' expression do scopeExpression od
 
 caseExpression ::= case expression of caseBranches esac
 
@@ -233,12 +217,25 @@ simplePattern ::=
     | sharp array
     | sharp sexp
     | sharp fun
-    | lb pattern rb
+    | '(' pattern ')'
 
-wildcardPattern ::= wildcard
+wildcardPattern ::= '_'
 
-sExprPattern ::= uident [ lb pattern ( comma pattern ) * rb ]
+sExprPattern ::= uident [ '(' pattern ( ',' pattern ) * ')' ]
 
-arrayPattern ::= squarelb [ pattern ( comma pattern ) * ] squarerb
+arrayPattern ::= '[' [ pattern ( ',' pattern ) * ] ']'
 
-listPattern ::= curlylb [ pattern ( comma pattern ) * ] curlyrb
+listPattern ::= '{' [ pattern ( ',' pattern ) * ] '}'
+
+syntaxExpression ::= syntax '(' syntaxSeq (alt syntaxSeq ) * ')'
+
+syntaxSeq ::= syntaxBinding + [ '{' expression '}' ]
+
+syntaxBinding ::= [ '-' ] [ pattern '=' ] syntaxPostfix
+
+syntaxPostfix ::= syntaxPrimary [ ('*' | '+' | '?' ) ]
+
+syntaxPrimary ::=
+    lident ( '[' [ expression ( ',' expression ) * ] ']' ) *
+    | '(' syntaxExpression ')'
+    | '$(' expression ')'

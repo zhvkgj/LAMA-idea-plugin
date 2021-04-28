@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import ru.mse.itmo.lama.language.psi.*;
 
-public class LamaWTFBinaryExpressionImplWTF extends LamaWTFBasicExpressionImplWTF implements LamaWTFBinaryExpression {
+public class LamaWTFSyntaxPrimaryImplWTF extends ASTWrapperPsiElement implements LamaWTFSyntaxPrimary {
 
-  public LamaWTFBinaryExpressionImplWTF(@NotNull ASTNode node) {
+  public LamaWTFSyntaxPrimaryImplWTF(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull LamaWTFVisitor visitor) {
-    visitor.visitBinaryExpression(this);
+    visitor.visitSyntaxPrimary(this);
   }
 
   @Override
@@ -29,14 +29,20 @@ public class LamaWTFBinaryExpressionImplWTF extends LamaWTFBasicExpressionImplWT
 
   @Override
   @NotNull
-  public List<LamaWTFBasicExpression> getBasicExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, LamaWTFBasicExpression.class);
+  public List<LamaWTFExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LamaWTFExpression.class);
   }
 
   @Override
-  @NotNull
-  public PsiElement getInfixop() {
-    return findNotNullChildByType(INFIXOP);
+  @Nullable
+  public LamaWTFSyntaxExpression getSyntaxExpression() {
+    return findChildByClass(LamaWTFSyntaxExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getLident() {
+    return findChildByType(LIDENT);
   }
 
 }

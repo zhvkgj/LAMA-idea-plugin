@@ -40,7 +40,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   };
 
   /* ********************************************************** */
-  // multiplicative ( add multiplicative ) *
+  // multiplicative ( ('+' | '-') multiplicative ) *
   public static boolean additive(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive")) return false;
     boolean r;
@@ -51,7 +51,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( add multiplicative ) *
+  // ( ('+' | '-') multiplicative ) *
   private static boolean additive_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_1")) return false;
     while (true) {
@@ -62,39 +62,47 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // add multiplicative
+  // ('+' | '-') multiplicative
   private static boolean additive_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, ADD);
+    r = additive_1_0_0(b, l + 1);
     r = r && multiplicative(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  /* ********************************************************** */
-  // squarelb [ expression ( comma expression ) * ] squarerb
-  public static boolean arrayExpression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "arrayExpression")) return false;
-    if (!nextTokenIs(b, SQUARELB)) return false;
+  // '+' | '-'
+  private static boolean additive_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "additive_1_0_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, SQUARELB);
-    r = r && arrayExpression_1(b, l + 1);
-    r = r && consumeToken(b, SQUARERB);
-    exit_section_(b, m, ARRAY_EXPRESSION, r);
+    r = consumeToken(b, "+");
+    if (!r) r = consumeToken(b, "-");
     return r;
   }
 
-  // [ expression ( comma expression ) * ]
+  /* ********************************************************** */
+  // '[' [ expression ( ',' expression ) * ] ']'
+  public static boolean arrayExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayExpression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ARRAY_EXPRESSION, "<array expression>");
+    r = consumeToken(b, "[");
+    r = r && arrayExpression_1(b, l + 1);
+    r = r && consumeToken(b, "]");
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // [ expression ( ',' expression ) * ]
   private static boolean arrayExpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayExpression_1")) return false;
     arrayExpression_1_0(b, l + 1);
     return true;
   }
 
-  // expression ( comma expression ) *
+  // expression ( ',' expression ) *
   private static boolean arrayExpression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayExpression_1_0")) return false;
     boolean r;
@@ -105,7 +113,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma expression ) *
+  // ( ',' expression ) *
   private static boolean arrayExpression_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayExpression_1_0_1")) return false;
     while (true) {
@@ -116,39 +124,38 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma expression
+  // ',' expression
   private static boolean arrayExpression_1_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayExpression_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // squarelb [ pattern ( comma pattern ) * ] squarerb
+  // '[' [ pattern ( ',' pattern ) * ] ']'
   public static boolean arrayPattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayPattern")) return false;
-    if (!nextTokenIs(b, SQUARELB)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, SQUARELB);
+    Marker m = enter_section_(b, l, _NONE_, ARRAY_PATTERN, "<array pattern>");
+    r = consumeToken(b, "[");
     r = r && arrayPattern_1(b, l + 1);
-    r = r && consumeToken(b, SQUARERB);
-    exit_section_(b, m, ARRAY_PATTERN, r);
+    r = r && consumeToken(b, "]");
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // [ pattern ( comma pattern ) * ]
+  // [ pattern ( ',' pattern ) * ]
   private static boolean arrayPattern_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayPattern_1")) return false;
     arrayPattern_1_0(b, l + 1);
     return true;
   }
 
-  // pattern ( comma pattern ) *
+  // pattern ( ',' pattern ) *
   private static boolean arrayPattern_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayPattern_1_0")) return false;
     boolean r;
@@ -159,7 +166,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma pattern ) *
+  // ( ',' pattern ) *
   private static boolean arrayPattern_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayPattern_1_0_1")) return false;
     while (true) {
@@ -170,12 +177,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma pattern
+  // ',' pattern
   private static boolean arrayPattern_1_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayPattern_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && pattern(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -263,7 +270,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // additive ( comp additive ) *
+  // additive ( ('<' | '>' | '<=' | '>=') additive ) *
   public static boolean comparison(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison")) return false;
     boolean r;
@@ -274,7 +281,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comp additive ) *
+  // ( ('<' | '>' | '<=' | '>=') additive ) *
   private static boolean comparison_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_1")) return false;
     while (true) {
@@ -285,14 +292,25 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comp additive
+  // ('<' | '>' | '<=' | '>=') additive
   private static boolean comparison_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMP);
+    r = comparison_1_0_0(b, l + 1);
     r = r && additive(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '<' | '>' | '<=' | '>='
+  private static boolean comparison_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, "<");
+    if (!r) r = consumeToken(b, ">");
+    if (!r) r = consumeToken(b, "<=");
+    if (!r) r = consumeToken(b, ">=");
     return r;
   }
 
@@ -320,7 +338,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // equality ( conj equality ) *
+  // equality ( '&&' equality ) *
   public static boolean conjunction(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "conjunction")) return false;
     boolean r;
@@ -331,7 +349,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( conj equality ) *
+  // ( '&&' equality ) *
   private static boolean conjunction_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "conjunction_1")) return false;
     while (true) {
@@ -342,12 +360,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // conj equality
+  // '&&' equality
   private static boolean conjunction_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "conjunction_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, CONJ);
+    r = consumeToken(b, "&&");
     r = r && equality(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -416,7 +434,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // conjunction ( disj conjunction ) *
+  // conjunction ( '!!' conjunction ) *
   public static boolean disjunction(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "disjunction")) return false;
     boolean r;
@@ -427,7 +445,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( disj conjunction ) *
+  // ( '!!' conjunction ) *
   private static boolean disjunction_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "disjunction_1")) return false;
     while (true) {
@@ -438,12 +456,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // disj conjunction
+  // '!!' conjunction
   private static boolean disjunction_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "disjunction_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, DISJ);
+    r = consumeToken(b, "!!");
     r = r && conjunction(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -466,7 +484,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // postfixExpression ( dot (functionCall | lident) ) *
+  // postfixExpression ( '.' (functionCall | lident) ) *
   public static boolean dotNotation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "dotNotation")) return false;
     boolean r;
@@ -477,7 +495,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( dot (functionCall | lident) ) *
+  // ( '.' (functionCall | lident) ) *
   private static boolean dotNotation_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "dotNotation_1")) return false;
     while (true) {
@@ -488,12 +506,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // dot (functionCall | lident)
+  // '.' (functionCall | lident)
   private static boolean dotNotation_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "dotNotation_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, DOT);
+    r = consumeToken(b, ".");
     r = r && dotNotation_1_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -555,7 +573,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comparison (eq comparison ) *
+  // comparison (('==' | '!=') comparison ) *
   public static boolean equality(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equality")) return false;
     boolean r;
@@ -566,7 +584,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (eq comparison ) *
+  // (('==' | '!=') comparison ) *
   private static boolean equality_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equality_1")) return false;
     while (true) {
@@ -577,19 +595,28 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // eq comparison
+  // ('==' | '!=') comparison
   private static boolean equality_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equality_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, EQ);
+    r = equality_1_0_0(b, l + 1);
     r = r && comparison(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
+  // '==' | '!='
+  private static boolean equality_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equality_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, "==");
+    if (!r) r = consumeToken(b, "!=");
+    return r;
+  }
+
   /* ********************************************************** */
-  // basicExpression [ semicolon expression ]
+  // basicExpression [ ';' expression ]
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
@@ -600,26 +627,26 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [ semicolon expression ]
+  // [ ';' expression ]
   private static boolean expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1")) return false;
     expression_1_0(b, l + 1);
     return true;
   }
 
-  // semicolon expression
+  // ';' expression
   private static boolean expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SEMICOLON);
+    r = consumeToken(b, ";");
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // for scopeExpression comma expression comma expression do scopeExpression od
+  // for scopeExpression ',' expression ',' expression do scopeExpression od
   public static boolean forExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "forExpression")) return false;
     if (!nextTokenIs(b, FOR)) return false;
@@ -627,9 +654,9 @@ public class LamaParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, FOR);
     r = r && scopeExpression(b, l + 1);
-    r = r && consumeToken(b, COMMA);
+    r = r && consumeToken(b, ",");
     r = r && expression(b, l + 1);
-    r = r && consumeToken(b, COMMA);
+    r = r && consumeToken(b, ",");
     r = r && expression(b, l + 1);
     r = r && consumeToken(b, DO);
     r = r && scopeExpression(b, l + 1);
@@ -652,7 +679,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // [ functionArgument ( comma functionArgument ) * ]
+  // [ functionArgument ( ',' functionArgument ) * ]
   public static boolean functionArguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionArguments")) return false;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_ARGUMENTS, "<function arguments>");
@@ -661,7 +688,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // functionArgument ( comma functionArgument ) *
+  // functionArgument ( ',' functionArgument ) *
   private static boolean functionArguments_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionArguments_0")) return false;
     boolean r;
@@ -672,7 +699,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma functionArgument ) *
+  // ( ',' functionArgument ) *
   private static boolean functionArguments_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionArguments_0_1")) return false;
     while (true) {
@@ -683,42 +710,42 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma functionArgument
+  // ',' functionArgument
   private static boolean functionArguments_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionArguments_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && functionArgument(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // curlylb scopeExpression curlyrb
+  // '{' scopeExpression '}'
   public static boolean functionBody(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionBody")) return false;
-    if (!nextTokenIs(b, CURLYLB)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, CURLYLB);
+    Marker m = enter_section_(b, l, _NONE_, FUNCTION_BODY, "<function body>");
+    r = consumeToken(b, "{");
     r = r && scopeExpression(b, l + 1);
-    r = r && consumeToken(b, CURLYRB);
-    exit_section_(b, m, FUNCTION_BODY, r);
+    r = r && consumeToken(b, "}");
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // [ public ] fun lident lb functionArguments rb functionBody
+  // [ public ] fun lident '(' functionArguments ')' functionBody
   public static boolean functionDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionDefinition")) return false;
     if (!nextTokenIs(b, "<function definition>", FUN, PUBLIC)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_DEFINITION, "<function definition>");
     r = functionDefinition_0(b, l + 1);
-    r = r && consumeTokens(b, 0, FUN, LIDENT, LB);
+    r = r && consumeTokens(b, 0, FUN, LIDENT);
+    r = r && consumeToken(b, "(");
     r = r && functionArguments(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = r && consumeToken(b, ")");
     r = r && functionBody(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -756,27 +783,28 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // import uident semicolon
+  // import uident ';'
   public static boolean importRule(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "importRule")) return false;
     if (!nextTokenIs(b, IMPORT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IMPORT, UIDENT, SEMICOLON);
+    r = consumeTokens(b, 0, IMPORT, UIDENT);
+    r = r && consumeToken(b, ";");
     exit_section_(b, m, IMPORT_RULE, r);
     return r;
   }
 
   /* ********************************************************** */
-  // infixHead lb functionArguments rb functionBody
+  // infixHead '(' functionArguments ')' functionBody
   public static boolean infixDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "infixDefinition")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, INFIX_DEFINITION, "<infix definition>");
     r = infixHead(b, l + 1);
-    r = r && consumeToken(b, LB);
+    r = r && consumeToken(b, "(");
     r = r && functionArguments(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = r && consumeToken(b, ")");
     r = r && functionBody(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -848,27 +876,26 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // curlylb [ expression ( comma expression ) * ] curlyrb
+  // '{' [ expression ( ',' expression ) * ] '}'
   public static boolean listExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression")) return false;
-    if (!nextTokenIs(b, CURLYLB)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, CURLYLB);
+    Marker m = enter_section_(b, l, _NONE_, LIST_EXPRESSION, "<list expression>");
+    r = consumeToken(b, "{");
     r = r && listExpression_1(b, l + 1);
-    r = r && consumeToken(b, CURLYRB);
-    exit_section_(b, m, LIST_EXPRESSION, r);
+    r = r && consumeToken(b, "}");
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // [ expression ( comma expression ) * ]
+  // [ expression ( ',' expression ) * ]
   private static boolean listExpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_1")) return false;
     listExpression_1_0(b, l + 1);
     return true;
   }
 
-  // expression ( comma expression ) *
+  // expression ( ',' expression ) *
   private static boolean listExpression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_1_0")) return false;
     boolean r;
@@ -879,7 +906,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma expression ) *
+  // ( ',' expression ) *
   private static boolean listExpression_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_1_0_1")) return false;
     while (true) {
@@ -890,39 +917,38 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma expression
+  // ',' expression
   private static boolean listExpression_1_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // curlylb [ pattern ( comma pattern ) * ] curlyrb
+  // '{' [ pattern ( ',' pattern ) * ] '}'
   public static boolean listPattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listPattern")) return false;
-    if (!nextTokenIs(b, CURLYLB)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, CURLYLB);
+    Marker m = enter_section_(b, l, _NONE_, LIST_PATTERN, "<list pattern>");
+    r = consumeToken(b, "{");
     r = r && listPattern_1(b, l + 1);
-    r = r && consumeToken(b, CURLYRB);
-    exit_section_(b, m, LIST_PATTERN, r);
+    r = r && consumeToken(b, "}");
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // [ pattern ( comma pattern ) * ]
+  // [ pattern ( ',' pattern ) * ]
   private static boolean listPattern_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listPattern_1")) return false;
     listPattern_1_0(b, l + 1);
     return true;
   }
 
-  // pattern ( comma pattern ) *
+  // pattern ( ',' pattern ) *
   private static boolean listPattern_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listPattern_1_0")) return false;
     boolean r;
@@ -933,7 +959,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma pattern ) *
+  // ( ',' pattern ) *
   private static boolean listPattern_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listPattern_1_0_1")) return false;
     while (true) {
@@ -944,19 +970,19 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma pattern
+  // ',' pattern
   private static boolean listPattern_1_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listPattern_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && pattern(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // customOperatorExpression ( mul customOperatorExpression ) *
+  // customOperatorExpression ( ('*' | '/' | '%') customOperatorExpression ) *
   public static boolean multiplicative(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative")) return false;
     boolean r;
@@ -967,7 +993,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( mul customOperatorExpression ) *
+  // ( ('*' | '/' | '%') customOperatorExpression ) *
   private static boolean multiplicative_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_1")) return false;
     while (true) {
@@ -978,14 +1004,24 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // mul customOperatorExpression
+  // ('*' | '/' | '%') customOperatorExpression
   private static boolean multiplicative_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, MUL);
+    r = multiplicative_1_0_0(b, l + 1);
     r = r && customOperatorExpression(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '*' | '/' | '%'
+  private static boolean multiplicative_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiplicative_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, "*");
+    if (!r) r = consumeToken(b, "/");
+    if (!r) r = consumeToken(b, "%");
     return r;
   }
 
@@ -1003,7 +1039,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // uident [ lb pattern ( comma pattern ) * rb ]
+  // uident [ '(' pattern ( ',' pattern ) * ')' ]
   public static boolean sExprPattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExprPattern")) return false;
     if (!nextTokenIs(b, UIDENT)) return false;
@@ -1015,27 +1051,27 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [ lb pattern ( comma pattern ) * rb ]
+  // [ '(' pattern ( ',' pattern ) * ')' ]
   private static boolean sExprPattern_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExprPattern_1")) return false;
     sExprPattern_1_0(b, l + 1);
     return true;
   }
 
-  // lb pattern ( comma pattern ) * rb
+  // '(' pattern ( ',' pattern ) * ')'
   private static boolean sExprPattern_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExprPattern_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, LB);
+    r = consumeToken(b, "(");
     r = r && pattern(b, l + 1);
     r = r && sExprPattern_1_0_2(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = r && consumeToken(b, ")");
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ( comma pattern ) *
+  // ( ',' pattern ) *
   private static boolean sExprPattern_1_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExprPattern_1_0_2")) return false;
     while (true) {
@@ -1046,19 +1082,19 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma pattern
+  // ',' pattern
   private static boolean sExprPattern_1_0_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExprPattern_1_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && pattern(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // uident [ lb expression [ ( comma expression ) * ] rb ]
+  // uident [ '(' expression [ ( ',' expression ) * ] ')' ]
   public static boolean sExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExpression")) return false;
     if (!nextTokenIs(b, UIDENT)) return false;
@@ -1070,34 +1106,34 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [ lb expression [ ( comma expression ) * ] rb ]
+  // [ '(' expression [ ( ',' expression ) * ] ')' ]
   private static boolean sExpression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExpression_1")) return false;
     sExpression_1_0(b, l + 1);
     return true;
   }
 
-  // lb expression [ ( comma expression ) * ] rb
+  // '(' expression [ ( ',' expression ) * ] ')'
   private static boolean sExpression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExpression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, LB);
+    r = consumeToken(b, "(");
     r = r && expression(b, l + 1);
     r = r && sExpression_1_0_2(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = r && consumeToken(b, ")");
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // [ ( comma expression ) * ]
+  // [ ( ',' expression ) * ]
   private static boolean sExpression_1_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExpression_1_0_2")) return false;
     sExpression_1_0_2_0(b, l + 1);
     return true;
   }
 
-  // ( comma expression ) *
+  // ( ',' expression ) *
   private static boolean sExpression_1_0_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExpression_1_0_2_0")) return false;
     while (true) {
@@ -1108,12 +1144,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma expression
+  // ',' expression
   private static boolean sExpression_1_0_2_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sExpression_1_0_2_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -1166,7 +1202,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   //     | sharp array
   //     | sharp sexp
   //     | sharp fun
-  //     | lb pattern rb
+  //     | '(' pattern ')'
   public static boolean simplePattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "simplePattern")) return false;
     boolean r;
@@ -1239,20 +1275,284 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // lb pattern rb
+  // '(' pattern ')'
   private static boolean simplePattern_16(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "simplePattern_16")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, LB);
+    r = consumeToken(b, "(");
     r = r && pattern(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = r && consumeToken(b, ")");
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // ( var | public ) variableDefinitionSeq semicolon
+  // [ '-' ] [ pattern '=' ] syntaxPostfix
+  public static boolean syntaxBinding(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxBinding")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SYNTAX_BINDING, "<syntax binding>");
+    r = syntaxBinding_0(b, l + 1);
+    r = r && syntaxBinding_1(b, l + 1);
+    r = r && syntaxPostfix(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // [ '-' ]
+  private static boolean syntaxBinding_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxBinding_0")) return false;
+    consumeToken(b, "-");
+    return true;
+  }
+
+  // [ pattern '=' ]
+  private static boolean syntaxBinding_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxBinding_1")) return false;
+    syntaxBinding_1_0(b, l + 1);
+    return true;
+  }
+
+  // pattern '='
+  private static boolean syntaxBinding_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxBinding_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = pattern(b, l + 1);
+    r = r && consumeToken(b, "=");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // syntax '(' syntaxSeq (alt syntaxSeq ) * ')'
+  public static boolean syntaxExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxExpression")) return false;
+    if (!nextTokenIs(b, SYNTAX)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SYNTAX);
+    r = r && consumeToken(b, "(");
+    r = r && syntaxSeq(b, l + 1);
+    r = r && syntaxExpression_3(b, l + 1);
+    r = r && consumeToken(b, ")");
+    exit_section_(b, m, SYNTAX_EXPRESSION, r);
+    return r;
+  }
+
+  // (alt syntaxSeq ) *
+  private static boolean syntaxExpression_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxExpression_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!syntaxExpression_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "syntaxExpression_3", c)) break;
+    }
+    return true;
+  }
+
+  // alt syntaxSeq
+  private static boolean syntaxExpression_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxExpression_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ALT);
+    r = r && syntaxSeq(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // syntaxPrimary [ ('*' | '+' | '?' ) ]
+  public static boolean syntaxPostfix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPostfix")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SYNTAX_POSTFIX, "<syntax postfix>");
+    r = syntaxPrimary(b, l + 1);
+    r = r && syntaxPostfix_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // [ ('*' | '+' | '?' ) ]
+  private static boolean syntaxPostfix_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPostfix_1")) return false;
+    syntaxPostfix_1_0(b, l + 1);
+    return true;
+  }
+
+  // '*' | '+' | '?'
+  private static boolean syntaxPostfix_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPostfix_1_0")) return false;
+    boolean r;
+    r = consumeToken(b, "*");
+    if (!r) r = consumeToken(b, "+");
+    if (!r) r = consumeToken(b, "?");
+    return r;
+  }
+
+  /* ********************************************************** */
+  // lident ( '[' [ expression ( ',' expression ) * ] ']' ) *
+  //     | '(' syntaxExpression ')'
+  //     | '$(' expression ')'
+  public static boolean syntaxPrimary(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SYNTAX_PRIMARY, "<syntax primary>");
+    r = syntaxPrimary_0(b, l + 1);
+    if (!r) r = syntaxPrimary_1(b, l + 1);
+    if (!r) r = syntaxPrimary_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // lident ( '[' [ expression ( ',' expression ) * ] ']' ) *
+  private static boolean syntaxPrimary_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LIDENT);
+    r = r && syntaxPrimary_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ( '[' [ expression ( ',' expression ) * ] ']' ) *
+  private static boolean syntaxPrimary_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!syntaxPrimary_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "syntaxPrimary_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // '[' [ expression ( ',' expression ) * ] ']'
+  private static boolean syntaxPrimary_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "[");
+    r = r && syntaxPrimary_0_1_0_1(b, l + 1);
+    r = r && consumeToken(b, "]");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [ expression ( ',' expression ) * ]
+  private static boolean syntaxPrimary_0_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0_1_0_1")) return false;
+    syntaxPrimary_0_1_0_1_0(b, l + 1);
+    return true;
+  }
+
+  // expression ( ',' expression ) *
+  private static boolean syntaxPrimary_0_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0_1_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expression(b, l + 1);
+    r = r && syntaxPrimary_0_1_0_1_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ( ',' expression ) *
+  private static boolean syntaxPrimary_0_1_0_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0_1_0_1_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!syntaxPrimary_0_1_0_1_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "syntaxPrimary_0_1_0_1_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // ',' expression
+  private static boolean syntaxPrimary_0_1_0_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_0_1_0_1_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ",");
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '(' syntaxExpression ')'
+  private static boolean syntaxPrimary_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "(");
+    r = r && syntaxExpression(b, l + 1);
+    r = r && consumeToken(b, ")");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '$(' expression ')'
+  private static boolean syntaxPrimary_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxPrimary_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "$(");
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, ")");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // syntaxBinding + [ '{' expression '}' ]
+  public static boolean syntaxSeq(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxSeq")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SYNTAX_SEQ, "<syntax seq>");
+    r = syntaxSeq_0(b, l + 1);
+    r = r && syntaxSeq_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // syntaxBinding +
+  private static boolean syntaxSeq_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxSeq_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = syntaxBinding(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!syntaxBinding(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "syntaxSeq_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [ '{' expression '}' ]
+  private static boolean syntaxSeq_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxSeq_1")) return false;
+    syntaxSeq_1_0(b, l + 1);
+    return true;
+  }
+
+  // '{' expression '}'
+  private static boolean syntaxSeq_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "syntaxSeq_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "{");
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, "}");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ( var | public ) variableDefinitionSeq ';'
   public static boolean variableDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variableDefinition")) return false;
     if (!nextTokenIs(b, "<variable definition>", PUBLIC, VAR)) return false;
@@ -1260,7 +1560,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, VARIABLE_DEFINITION, "<variable definition>");
     r = variableDefinition_0(b, l + 1);
     r = r && variableDefinitionSeq(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
+    r = r && consumeToken(b, ";");
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1306,7 +1606,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variableDefinitionItem ( comma variableDefinitionItem ) *
+  // variableDefinitionItem ( ',' variableDefinitionItem ) *
   public static boolean variableDefinitionSeq(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variableDefinitionSeq")) return false;
     if (!nextTokenIs(b, LIDENT)) return false;
@@ -1318,7 +1618,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma variableDefinitionItem ) *
+  // ( ',' variableDefinitionItem ) *
   private static boolean variableDefinitionSeq_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variableDefinitionSeq_1")) return false;
     while (true) {
@@ -1329,12 +1629,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma variableDefinitionItem
+  // ',' variableDefinitionItem
   private static boolean variableDefinitionSeq_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variableDefinitionSeq_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
+    r = consumeToken(b, ",");
     r = r && variableDefinitionItem(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -1357,14 +1657,13 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // wildcard
+  // '_'
   public static boolean wildcardPattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "wildcardPattern")) return false;
-    if (!nextTokenIs(b, WILDCARD)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, WILDCARD);
-    exit_section_(b, m, WILDCARD_PATTERN, r);
+    Marker m = enter_section_(b, l, _NONE_, WILDCARD_PATTERN, "<wildcard pattern>");
+    r = consumeToken(b, "_");
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1413,9 +1712,11 @@ public class LamaParser implements PsiParser, LightPsiParser {
   //     lident                  |
   //     true                    |
   //     false                   |
-  //     infix                   |
+  //     infix infixop           |
+  //     fun '(' functionArguments ')' functionBody |
   //     skip                    |
-  //     lb scopeExpression rb   |
+  //     syntaxExpression        |
+  //     '(' scopeExpression ')'   |
   //     listExpression          |
   //     arrayExpression         |
   //     sExpression             |
@@ -1434,9 +1735,11 @@ public class LamaParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeTokenSmart(b, LIDENT);
     if (!r) r = consumeTokenSmart(b, TRUE);
     if (!r) r = consumeTokenSmart(b, FALSE);
-    if (!r) r = consumeTokenSmart(b, INFIX);
+    if (!r) r = parseTokensSmart(b, 0, INFIX, INFIXOP);
+    if (!r) r = primary_7(b, l + 1);
     if (!r) r = consumeTokenSmart(b, SKIP);
-    if (!r) r = primary_8(b, l + 1);
+    if (!r) r = syntaxExpression(b, l + 1);
+    if (!r) r = primary_10(b, l + 1);
     if (!r) r = listExpression(b, l + 1);
     if (!r) r = arrayExpression(b, l + 1);
     if (!r) r = sExpression(b, l + 1);
@@ -1449,38 +1752,52 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // lb scopeExpression rb
-  private static boolean primary_8(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_8")) return false;
+  // fun '(' functionArguments ')' functionBody
+  private static boolean primary_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary_7")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, LB);
-    r = r && scopeExpression(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = consumeTokenSmart(b, FUN);
+    r = r && consumeToken(b, "(");
+    r = r && functionArguments(b, l + 1);
+    r = r && consumeToken(b, ")");
+    r = r && functionBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // lb [ expression ( comma expression ) * ] rb
+  // '(' scopeExpression ')'
+  private static boolean primary_10(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary_10")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokenSmart(b, "(");
+    r = r && scopeExpression(b, l + 1);
+    r = r && consumeToken(b, ")");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '(' [ expression ( ',' expression ) * ] ')'
   private static boolean functionCall_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionCall_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, LB);
+    r = consumeTokenSmart(b, "(");
     r = r && functionCall_0_1(b, l + 1);
-    r = r && consumeToken(b, RB);
+    r = r && consumeToken(b, ")");
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // [ expression ( comma expression ) * ]
+  // [ expression ( ',' expression ) * ]
   private static boolean functionCall_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionCall_0_1")) return false;
     functionCall_0_1_0(b, l + 1);
     return true;
   }
 
-  // expression ( comma expression ) *
+  // expression ( ',' expression ) *
   private static boolean functionCall_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionCall_0_1_0")) return false;
     boolean r;
@@ -1491,7 +1808,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( comma expression ) *
+  // ( ',' expression ) *
   private static boolean functionCall_0_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionCall_0_1_0_1")) return false;
     while (true) {
@@ -1502,25 +1819,25 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // comma expression
+  // ',' expression
   private static boolean functionCall_0_1_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functionCall_0_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, COMMA);
+    r = consumeTokenSmart(b, ",");
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // squarelb expression squarerb
+  // '[' expression ']'
   private static boolean arrayIndexing_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayIndexing_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, SQUARELB);
+    r = consumeTokenSmart(b, "[");
     r = r && expression(b, l + 1);
-    r = r && consumeToken(b, SQUARERB);
+    r = r && consumeToken(b, "]");
     exit_section_(b, m, null, r);
     return r;
   }
