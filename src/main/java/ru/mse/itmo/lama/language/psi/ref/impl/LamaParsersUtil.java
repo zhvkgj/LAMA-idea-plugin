@@ -1,34 +1,121 @@
 package ru.mse.itmo.lama.language.psi.ref.impl;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sun.istack.Nullable;
-import ru.mse.itmo.lama.language.psi.LamaTypes;
 import ru.mse.itmo.lama.language.psi.LamaWTFDefinition;
+import ru.mse.itmo.lama.language.psi.LamaWTFFunctionDefinition;
+import ru.mse.itmo.lama.language.psi.LamaWTFInfixDefinition;
+import ru.mse.itmo.lama.language.psi.LamaWTFVariableDefinition;
+import ru.mse.itmo.lama.language.psi.ref.LamaElementFactory;
 
 import javax.swing.*;
 
 public class LamaParsersUtil extends GeneratedParserUtilBase {
-    public static String getKey(LamaWTFDefinition element) {
-        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
-        if (keyNode != null) {
-            // IMPORTANT: Convert embedded escaped spaces to simple spaces
-            return keyNode.getText().replaceAll("\\\\ ", " ");
-        } else {
+
+    private static String convertEmbeddedSpaces(String str) {
+        return str.replaceAll("\\\\ ", " ");
+    }
+
+
+    private static PsiElement getKeyFromFunctionDecl(LamaWTFFunctionDefinition funcDefinition) {
+        return funcDefinition.getLident();
+    }
+
+    private static PsiElement getValueFromFunctionDecl(LamaWTFFunctionDefinition funcDefinition) {
+        return funcDefinition.getFunctionBody();
+    }
+
+    private static PsiElement getKeyFromVarDecl(LamaWTFVariableDefinition varDefinition) {
+        var definitionSeq = varDefinition.getVariableDefinitionSeq();
+        var definitionItemList = definitionSeq.getVariableDefinitionItemList();
+        if (definitionItemList.size() == 0) {
             return null;
         }
+        return definitionItemList.get(0).getLident();
+    }
+
+    private static PsiElement getValueFromVarDecl(LamaWTFVariableDefinition varDefinition) {
+        var definitionSeq = varDefinition.getVariableDefinitionSeq();
+        var definitionItemList = definitionSeq.getVariableDefinitionItemList();
+        if (definitionItemList.size() == 0) {
+            return null;
+        }
+        return definitionItemList.get(0).getBasicExpression();
+    }
+
+    private static PsiElement getKeyFromInfixDef(LamaWTFInfixDefinition infixDefinition) {
+        return infixDefinition.getInfixHead();
+    }
+
+    private static PsiElement getValueFromInfixDef(LamaWTFInfixDefinition infixDefinition) {
+        return infixDefinition.getFunctionBody().getScopeExpression();
+    }
+
+    private static PsiElement resolveNeededKeyElement(LamaWTFDefinition element) {
+        PsiElement ans = null;
+
+        if (element.getFunctionDefinition() != null) {
+            ans = getKeyFromFunctionDecl(element.getFunctionDefinition());
+        } else if (element.getVariableDefinition() != null) {
+            ans = getKeyFromVarDecl(element.getVariableDefinition());
+        } else if (element.getInfixDefinition() != null) {
+            ans = getKeyFromInfixDef(element.getInfixDefinition());
+        }
+
+        return ans;
+    }
+
+
+    public static String getKey(LamaWTFDefinition element) {
+        String foundText = null;
+
+        if (element.getFunctionDefinition() != null) {
+            foundText = getKeyFromFunctionDecl(element.getFunctionDefinition()).getText();
+        } else if (element.getVariableDefinition() != null) {
+            var name = getKeyFromVarDecl(element.getVariableDefinition());
+            if (name != null) {
+                foundText = name.getText();
+            }
+        } else if (element.getInfixDefinition() != null) {
+            foundText = getKeyFromInfixDef(element.getInfixDefinition()).getText();
+        }
+
+
+        if (foundText != null) {
+            return convertEmbeddedSpaces(foundText);
+        }
+        return foundText;
+//        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
+//        if (keyNode != null) {
+//            // IMPORTANT: Convert embedded escaped spaces to simple spaces
+//            return keyNode.getText().replaceAll("\\\\ ", " ");
+//        } else {
+//            return null;
+//        }
     }
 
     public static String getValue(LamaWTFDefinition element) {
-        ASTNode valueNode = element.getNode().findChildByType(LamaTypes.BASIC_EXPRESSION);
-        if (valueNode != null) {
-            return valueNode.getText();
-        } else {
-            return null;
+        String foundText = null;
+
+        if (element.getFunctionDefinition() != null) {
+            foundText = getValueFromFunctionDecl(element.getFunctionDefinition()).getText();
+        } else if (element.getVariableDefinition() != null) {
+            var name = getValueFromVarDecl(element.getVariableDefinition());
+            if (name != null) {
+                foundText = name.getText();
+            }
+        } else if (element.getInfixDefinition() != null) {
+            foundText = getValueFromInfixDef(element.getInfixDefinition()).getText();
         }
+
+        if (foundText != null) {
+            return convertEmbeddedSpaces(foundText);
+        }
+
+        return foundText;
     }
 
     public static String getName(LamaWTFDefinition element) {
@@ -36,22 +123,16 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
     }
 
     public static PsiElement setName(LamaWTFDefinition element, String newName) {
-        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
-//        if (keyNode != null) {
-//            SimpleProperty property = SimpleElementFactory.createProperty(element.getProject(), newName);
-//            ASTNode newKeyNode = property.getFirstChild().getNode();
-//            element.getNode().replaceChild(keyNode, newKeyNode);
-//        }
-        return element;
+        var keyNode = resolveNeededKeyElement(element);
+        if (keyNode != null) {
+            var newIndent = LamaElementFactory.Companion.createLamaElem(element.getProject(), newName);
+            element.getNode().replaceChild(keyNode.getNode(), newIndent.getNode());
+        }
+       return element;
     }
 
     public static PsiElement getNameIdentifier(LamaWTFDefinition element) {
-        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
-        if (keyNode != null) {
-            return keyNode.getPsi();
-        } else {
-            return null;
-        }
+        return resolveNeededKeyElement(element);
     }
 
     public static ItemPresentation getPresentation(final LamaWTFDefinition element) {

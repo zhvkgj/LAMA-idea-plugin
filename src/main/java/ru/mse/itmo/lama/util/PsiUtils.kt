@@ -17,14 +17,13 @@ class PsiUtils {
             val manager = PsiManager.getInstance(project)
             for (virtualFile in virtualFiles) {
                 val lamaFile = manager.findFile(virtualFile)
-                if (lamaFile is LamaFile) {
-                    val foundData = PsiTreeUtil.getChildrenOfType(lamaFile.firstChild, LamaElem::class.java)
-                    for (elem in foundData) {
-                        if (elem.text.contains("var x") && key == "x") {
-                            ans.add(elem)
-                            return ans
+                if (lamaFile != null && lamaFile is LamaFile) {
+                    if (lamaFile.isValid && lamaFile.children.isNotEmpty() && lamaFile.firstChild.children.isNotEmpty()) {
+                        val foundData = PsiTreeUtil.getChildrenOfType(lamaFile.firstChild, LamaElem::class.java)
+                        for (elem in foundData) {
+                            if (key == elem.name) ans.add(elem)
+
                         }
-//                        if (key == symbol.name) ans.add(symbol)
                     }
                 }
             }
@@ -38,7 +37,7 @@ class PsiUtils {
             for (virtualFile in virtualFiles) {
                 val lamaFile = manager.findFile(virtualFile)
                 if (lamaFile != null && lamaFile is LamaFile) {
-                    if (lamaFile.isValid && lamaFile.children.size > 0 && lamaFile.firstChild.children.isNotEmpty()) {
+                    if (lamaFile.isValid && lamaFile.children.isNotEmpty() && lamaFile.firstChild.children.isNotEmpty()) {
                         val foundData = PsiTreeUtil.getChildrenOfType(lamaFile.firstChild, LamaElem::class.java)
                         if (foundData != null) {
                             ans.addAll(foundData)
