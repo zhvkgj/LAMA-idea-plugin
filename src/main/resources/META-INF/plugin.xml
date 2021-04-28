@@ -19,6 +19,8 @@
                                implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Lama"
                                        implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
+        <lang.commenter language="Lama" implementationClass="ru.mse.itmo.lama.editor.LamaCommenter"/>
+        <!--        <psi.referenceContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
     </extensions>
 
     <actions>
