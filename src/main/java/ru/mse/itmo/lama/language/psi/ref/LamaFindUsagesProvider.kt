@@ -25,8 +25,9 @@ class LamaFindUsagesProvider : FindUsagesProvider {
 
     override fun canFindUsagesFor(psiElement: PsiElement): Boolean {
         val ans = psiElement is PsiNamedElement
-        getLogger<LamaFindUsagesProvider>().log(LogLevel.Info, ans, null)
-        return psiElement is PsiNamedElement
+//        getLogger<LamaFindUsagesProvider>().log(LogLevel.Info, ans, null)
+        getLogger<LamaFindUsagesProvider>().log(LogLevel.Info, psiElement.references, null)
+        return ans
     }
 
     override fun getHelpId(psiElement: PsiElement): String? {

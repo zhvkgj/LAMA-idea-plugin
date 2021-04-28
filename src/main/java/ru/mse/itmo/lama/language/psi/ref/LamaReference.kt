@@ -20,7 +20,11 @@ class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange)
 
     fun multiResolve(incompleteCode: Boolean): Array<ResolveResult?>? {
         val project = myElement.project
-        val properties = PsiUtils.findByKey(project, this.element.text)
+        val elem = this.element as LamaElem
+        if (elem.name == null) {
+            return null
+        }
+        val properties = PsiUtils.findByKey(project, elem.name!!)
         val results = ArrayList<ResolveResult>()
         for (property in properties) {
             results.add(PsiElementResolveResult(property))
