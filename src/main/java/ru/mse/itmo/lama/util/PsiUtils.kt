@@ -20,7 +20,7 @@ class PsiUtils {
                 val lamaFile = PsiManager.getInstance(project).findFile(virtualFile) as LamaFile
                 val foundData = PsiTreeUtil.getChildrenOfType(lamaFile, LamaElem::class.java)
                 for (symbol in foundData) {
-                    if (key == symbol.text) ans.add(symbol)
+                    if (key == symbol.name) ans.add(symbol)
                 }
             }
             return ans

@@ -4,6 +4,7 @@ import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.util.ProcessingContext
+import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
 import ru.mse.itmo.lama.language.psi.LamaWTFExpression
 import ru.mse.itmo.lama.language.psi.LamaWTFVariableDefinition
 
@@ -12,7 +13,7 @@ class LamaReferenceContributor : PsiReferenceContributor() {
 
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(
-                PlatformPatterns.psiElement(LamaWTFExpression::class.java),
+                PlatformPatterns.psiElement(LamaWTFDefinition::class.java),
                 LamaFileReferenceProvider()
         )
 

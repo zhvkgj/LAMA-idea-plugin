@@ -7,13 +7,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sun.istack.Nullable;
 import ru.mse.itmo.lama.language.psi.LamaTypes;
-import ru.mse.itmo.lama.language.psi.LamaWTFExpression;
+import ru.mse.itmo.lama.language.psi.LamaWTFDefinition;
 
 import javax.swing.*;
 
 public class LamaParsersUtil extends GeneratedParserUtilBase {
-    public static String getKey(LamaWTFExpression element) {
-        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.BEFORE);
+    public static String getKey(LamaWTFDefinition element) {
+        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
         if (keyNode != null) {
             // IMPORTANT: Convert embedded escaped spaces to simple spaces
             return keyNode.getText().replaceAll("\\\\ ", " ");
@@ -22,8 +22,8 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
         }
     }
 
-    public static String getValue(LamaWTFExpression element) {
-        ASTNode valueNode = element.getNode().findChildByType(LamaTypes.AFTER);
+    public static String getValue(LamaWTFDefinition element) {
+        ASTNode valueNode = element.getNode().findChildByType(LamaTypes.BASIC_EXPRESSION);
         if (valueNode != null) {
             return valueNode.getText();
         } else {
@@ -31,12 +31,12 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
         }
     }
 
-    public static String getName(LamaWTFExpression element) {
+    public static String getName(LamaWTFDefinition element) {
         return getKey(element);
     }
 
-    public static PsiElement setName(LamaWTFExpression element, String newName) {
-        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.AFTER);
+    public static PsiElement setName(LamaWTFDefinition element, String newName) {
+        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
 //        if (keyNode != null) {
 //            SimpleProperty property = SimpleElementFactory.createProperty(element.getProject(), newName);
 //            ASTNode newKeyNode = property.getFirstChild().getNode();
@@ -45,8 +45,8 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
         return element;
     }
 
-    public static PsiElement getNameIdentifier(LamaWTFExpression element) {
-        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.AFTER);
+    public static PsiElement getNameIdentifier(LamaWTFDefinition element) {
+        ASTNode keyNode = element.getNode().findChildByType(LamaTypes.LIDENT);
         if (keyNode != null) {
             return keyNode.getPsi();
         } else {
@@ -54,7 +54,7 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
         }
     }
 
-    public static ItemPresentation getPresentation(final LamaWTFExpression element) {
+    public static ItemPresentation getPresentation(final LamaWTFDefinition element) {
         return new ItemPresentation() {
             @Nullable
             @Override

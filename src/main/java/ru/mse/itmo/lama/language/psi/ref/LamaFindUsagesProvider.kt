@@ -1,12 +1,26 @@
 package ru.mse.itmo.lama.language.psi.ref
 
+import com.intellij.lang.cacheBuilder.DefaultWordsScanner
+import com.intellij.lang.cacheBuilder.WordsScanner
 import com.intellij.lang.findUsages.FindUsagesProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
+import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.util.elementType
+import ru.mse.itmo.lama.language.LamaLexerAdapter
 import ru.mse.itmo.lama.language.psi.LamaElementType
+import ru.mse.itmo.lama.language.psi.LamaTypes
+
 
 class LamaFindUsagesProvider : FindUsagesProvider {
+
+    override fun getWordsScanner(): WordsScanner? {
+        return DefaultWordsScanner(LamaLexerAdapter(),
+                TokenSet.create(LamaTypes.LIDENT),
+                TokenSet.create(LamaTypes.DO),
+                TokenSet.EMPTY)
+    }
+
     override fun canFindUsagesFor(psiElement: PsiElement): Boolean {
         return psiElement is PsiNamedElement
     }

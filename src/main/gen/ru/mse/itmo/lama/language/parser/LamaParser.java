@@ -9,8 +9,8 @@ import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
+import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
-import static ru.mse.itmo.lama.language.psi.ref.impl.LamaParsersUtil.*;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class LamaParser implements PsiParser, LightPsiParser {
