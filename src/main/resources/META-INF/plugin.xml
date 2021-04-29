@@ -1,11 +1,11 @@
 <idea-plugin>
-    <id>org.example.lama-plugin</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>ru.mse.lama-plugin</id>
+    <name>PLama</name>
+    <vendor>MSE ITMO</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Simple plugin for Lama Language<br>
+    <url>https://github.com/JetBrains-Research/Lama</url>
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
