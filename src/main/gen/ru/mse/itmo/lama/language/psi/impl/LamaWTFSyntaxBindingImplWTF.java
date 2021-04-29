@@ -1,28 +1,24 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi.impl;
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import ru.mse.itmo.lama.language.psi.LamaWTFBasicExpression;
-import ru.mse.itmo.lama.language.psi.LamaWTFBinaryExpression;
+import org.jetbrains.annotations.Nullable;
+import ru.mse.itmo.lama.language.psi.LamaWTFPattern;
+import ru.mse.itmo.lama.language.psi.LamaWTFSyntaxBinding;
+import ru.mse.itmo.lama.language.psi.LamaWTFSyntaxPostfix;
 import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
 
-import java.util.List;
+public class LamaWTFSyntaxBindingImplWTF extends ASTWrapperPsiElement implements LamaWTFSyntaxBinding {
 
-import static ru.mse.itmo.lama.language.psi.LamaTypes.INFIXOP;
-
-public class LamaWTFBinaryExpressionImplWTF extends LamaWTFBasicExpressionImplWTF implements LamaWTFBinaryExpression {
-
-  public LamaWTFBinaryExpressionImplWTF(@NotNull ASTNode node) {
+  public LamaWTFSyntaxBindingImplWTF(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull LamaWTFVisitor visitor) {
-    visitor.visitBinaryExpression(this);
+    visitor.visitSyntaxBinding(this);
   }
 
   @Override
@@ -32,15 +28,15 @@ public class LamaWTFBinaryExpressionImplWTF extends LamaWTFBasicExpressionImplWT
   }
 
   @Override
-  @NotNull
-  public List<LamaWTFBasicExpression> getBasicExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, LamaWTFBasicExpression.class);
+  @Nullable
+  public LamaWTFPattern getPattern() {
+    return findChildByClass(LamaWTFPattern.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getInfixop() {
-    return findNotNullChildByType(INFIXOP);
+  public LamaWTFSyntaxPostfix getSyntaxPostfix() {
+    return findNotNullChildByClass(LamaWTFSyntaxPostfix.class);
   }
 
 }

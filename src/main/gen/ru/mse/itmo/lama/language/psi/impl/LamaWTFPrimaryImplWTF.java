@@ -95,6 +95,12 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
 
   @Override
   @Nullable
+  public LamaWTFVariableUsage getVariableUsage() {
+    return findChildByClass(LamaWTFVariableUsage.class);
+  }
+
+  @Override
+  @Nullable
   public LamaWTFWhileDoExpression getWhileDoExpression() {
     return findChildByClass(LamaWTFWhileDoExpression.class);
   }
@@ -115,12 +121,6 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
   @Nullable
   public PsiElement getInfixop() {
     return findChildByType(INFIXOP);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getLident() {
-    return findChildByType(LIDENT);
   }
 
   @Override

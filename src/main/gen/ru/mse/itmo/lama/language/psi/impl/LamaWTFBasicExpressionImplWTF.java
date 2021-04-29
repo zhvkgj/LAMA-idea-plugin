@@ -6,6 +6,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 import ru.mse.itmo.lama.language.psi.LamaWTFBasicExpression;
+import ru.mse.itmo.lama.language.psi.LamaWTFDisjunction;
 import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
 
 public class LamaWTFBasicExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFBasicExpression {

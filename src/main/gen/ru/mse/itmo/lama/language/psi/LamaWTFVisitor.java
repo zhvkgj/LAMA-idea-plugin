@@ -204,6 +204,10 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitVariableUsage(@NotNull LamaWTFVariableUsage o) {
+    visitPsiElement(o);
+  }
+
   public void visitWhileDoExpression(@NotNull LamaWTFWhileDoExpression o) {
     visitPsiElement(o);
   }

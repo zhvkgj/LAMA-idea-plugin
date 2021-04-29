@@ -89,6 +89,9 @@ definition ::=
     methods=[getKey getValue getName setName getNameIdentifier getPresentation]
 }
 
+variableUsage ::= lident
+
+
 variableDefinition ::= ( var | public ) variableDefinitionSeq ';'
 
 variableDefinitionSeq ::= variableDefinitionItem ( ',' variableDefinitionItem ) *
@@ -153,7 +156,7 @@ primary ::=
     decimal                 |
     string                  |
     char                    |
-    lident                  |
+    variableUsage           |
     true                    |
     false                   |
     infix infixop           |

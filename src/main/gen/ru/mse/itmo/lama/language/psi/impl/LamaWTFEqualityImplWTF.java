@@ -1,22 +1,25 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi.impl;
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import ru.mse.itmo.lama.language.psi.LamaWTFBinaryOperand;
-import ru.mse.itmo.lama.language.psi.LamaWTFPostfixExpression;
+import ru.mse.itmo.lama.language.psi.LamaWTFComparison;
+import ru.mse.itmo.lama.language.psi.LamaWTFEquality;
 import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
 
-public class LamaWTFBinaryOperandImplWTF extends LamaWTFBasicExpressionImplWTF implements LamaWTFBinaryOperand {
+import java.util.List;
 
-  public LamaWTFBinaryOperandImplWTF(@NotNull ASTNode node) {
+public class LamaWTFEqualityImplWTF extends ASTWrapperPsiElement implements LamaWTFEquality {
+
+  public LamaWTFEqualityImplWTF(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull LamaWTFVisitor visitor) {
-    visitor.visitBinaryOperand(this);
+    visitor.visitEquality(this);
   }
 
   @Override
@@ -27,8 +30,8 @@ public class LamaWTFBinaryOperandImplWTF extends LamaWTFBasicExpressionImplWTF i
 
   @Override
   @NotNull
-  public LamaWTFPostfixExpression getPostfixExpression() {
-    return findNotNullChildByClass(LamaWTFPostfixExpression.class);
+  public List<LamaWTFComparison> getComparisonList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LamaWTFComparison.class);
   }
 
 }

@@ -1,16 +1,39 @@
 package ru.mse.itmo.lama.util
 
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.FileTypeIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import ru.mse.itmo.lama.language.LamaFileType
 import ru.mse.itmo.lama.language.psi.LamaFile
+import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
 import ru.mse.itmo.lama.language.psi.ref.LamaElem
 
 class PsiUtils {
     companion object {
+
+        fun findByValueFromParent(parent: PsiElement, value: String) : List<LamaElem> {
+            val ans = ArrayList<LamaElem>()
+            val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaElem::class.java)
+            for (elem in foundData) {
+                val foundVal = elem as LamaWTFDefinition
+                if (value == foundVal.value) ans.add(elem)
+            }
+            return ans
+        }
+
+
+        fun findByKeyFromParent(parent: PsiElement, key: String) : List<LamaElem> {
+            val ans = ArrayList<LamaElem>()
+            val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaElem::class.java)
+            for (elem in foundData) {
+                if (key == elem.name) ans.add(elem)
+            }
+            return ans
+        }
+
         fun findByKey(project: Project, key: String) : List<LamaElem> {
             val ans = ArrayList<LamaElem>()
             val virtualFiles = FileTypeIndex.getFiles(LamaFileType.INSTANCE, GlobalSearchScope.allScope(project))
@@ -46,6 +69,16 @@ class PsiUtils {
                 }
             }
             return ans
+        }
+
+
+        fun getParentOfType(element: PsiElement?, type: Class<*>): PsiElement? {
+            if (element == null) {
+                return null
+            }
+            return if (type.isAssignableFrom(element.javaClass)) {
+                element
+            } else getParentOfType(element.parent, type)
         }
     }
 

@@ -1642,6 +1642,26 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // lident  {
+  // }
+  public static boolean variableUsage(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variableUsage")) return false;
+    if (!nextTokenIs(b, LIDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LIDENT);
+    r = r && variableUsage_1(b, l + 1);
+    exit_section_(b, m, VARIABLE_USAGE, r);
+    return r;
+  }
+
+  // {
+  // }
+  private static boolean variableUsage_1(PsiBuilder b, int l) {
+    return true;
+  }
+
+  /* ********************************************************** */
   // while expression do scopeExpression od
   public static boolean whileDoExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "whileDoExpression")) return false;
@@ -1710,7 +1730,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
   // decimal                 |
   //     string                  |
   //     char                    |
-  //     lident                  |
+  //     variableUsage           |
   //     true                    |
   //     false                   |
   //     infix infixop           |
@@ -1733,7 +1753,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     r = consumeTokenSmart(b, DECIMAL);
     if (!r) r = consumeTokenSmart(b, STRING);
     if (!r) r = consumeTokenSmart(b, CHAR);
-    if (!r) r = consumeTokenSmart(b, LIDENT);
+    if (!r) r = variableUsage(b, l + 1);
     if (!r) r = consumeTokenSmart(b, TRUE);
     if (!r) r = consumeTokenSmart(b, FALSE);
     if (!r) r = parseTokensSmart(b, 0, INFIX, INFIXOP);

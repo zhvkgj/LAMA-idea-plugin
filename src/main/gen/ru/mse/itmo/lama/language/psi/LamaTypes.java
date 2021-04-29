@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 import ru.mse.itmo.lama.language.psi.impl.*;
 
 public interface LamaTypes {
@@ -57,6 +57,7 @@ public interface LamaTypes {
   IElementType VARIABLE_DEFINITION = new LamaElementType("VARIABLE_DEFINITION");
   IElementType VARIABLE_DEFINITION_ITEM = new LamaElementType("VARIABLE_DEFINITION_ITEM");
   IElementType VARIABLE_DEFINITION_SEQ = new LamaElementType("VARIABLE_DEFINITION_SEQ");
+  IElementType VARIABLE_USAGE = new LamaElementType("VARIABLE_USAGE");
   IElementType WHILE_DO_EXPRESSION = new LamaElementType("WHILE_DO_EXPRESSION");
   IElementType WILDCARD_PATTERN = new LamaElementType("WILDCARD_PATTERN");
 
@@ -251,6 +252,9 @@ public interface LamaTypes {
       }
       else if (type == VARIABLE_DEFINITION_SEQ) {
         return new LamaWTFVariableDefinitionSeqImplWTF(node);
+      }
+      else if (type == VARIABLE_USAGE) {
+        return new LamaWTFVariableUsageImplWTF(node);
       }
       else if (type == WHILE_DO_EXPRESSION) {
         return new LamaWTFWhileDoExpressionImplWTF(node);
