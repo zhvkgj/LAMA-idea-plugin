@@ -5,10 +5,12 @@ Simple IntelliJ IDEA plugin for Lama language
 
 ### Marketplace 
 Search `PLama` in JetBrains Marketplace. It's possible that it won't be found, because plugin is an extremely fresh.
-If you do not yet have a project open in IDEA (and after first-time setup):
+Link: [https://plugins.jetbrains.com/plugin/16704-plama](https://plugins.jetbrains.com/plugin/16704-plama)
+
 
 ### Local install
 
+If you do not yet have a project open in IDEA (and after first-time setup):
 1. On the IDEA welcome screen, select “Configure(dropdown)→Plugins”
 2. Click “Install plugin from disk…”
 3. Select the “intellij-haxe.jar” file you downloaded
