@@ -1,25 +1,26 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi.impl;
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import ru.mse.itmo.lama.language.psi.*;
-import ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl;
+import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage;
+import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
 import ru.mse.itmo.lama.language.psi.ref.impl.LamaParsersUtil;
 
-public class LamaWTFDefinitionImplWTF extends LamaElemImpl implements LamaWTFDefinition {
+import static ru.mse.itmo.lama.language.psi.LamaTypes.LIDENT;
 
-  public LamaWTFDefinitionImplWTF(@NotNull ASTNode node) {
+public class LamaWTFVariableUsageImplWTF extends ASTWrapperPsiElement implements LamaWTFVariableUsage {
+
+  public LamaWTFVariableUsageImplWTF(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull LamaWTFVisitor visitor) {
-    visitor.visitDefinition(this);
+    visitor.visitVariableUsage(this);
   }
 
   @Override
@@ -29,31 +30,9 @@ public class LamaWTFDefinitionImplWTF extends LamaElemImpl implements LamaWTFDef
   }
 
   @Override
-  @Nullable
-  public LamaWTFFunctionDefinition getFunctionDefinition() {
-    return findChildByClass(LamaWTFFunctionDefinition.class);
-  }
-
-  @Override
-  @Nullable
-  public LamaWTFInfixDefinition getInfixDefinition() {
-    return findChildByClass(LamaWTFInfixDefinition.class);
-  }
-
-  @Override
-  @Nullable
-  public LamaWTFVariableDefinition getVariableDefinition() {
-    return findChildByClass(LamaWTFVariableDefinition.class);
-  }
-
-  @Override
-  public String getKey() {
-    return LamaParsersUtil.getKey(this);
-  }
-
-  @Override
-  public String getValue() {
-    return LamaParsersUtil.getValue(this);
+  @NotNull
+  public PsiElement getLident() {
+    return findNotNullChildByType(LIDENT);
   }
 
   @Override
@@ -74,11 +53,6 @@ public class LamaWTFDefinitionImplWTF extends LamaElemImpl implements LamaWTFDef
   @Override
   public ItemPresentation getPresentation() {
     return LamaParsersUtil.getPresentation(this);
-  }
-
-  @Override
-  public PsiReference @NotNull [] getReferences() {
-    return LamaParsersUtil.getReferences(this);
   }
 
 }

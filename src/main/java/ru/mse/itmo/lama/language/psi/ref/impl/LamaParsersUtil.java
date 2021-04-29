@@ -140,6 +140,12 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
             @Nullable
             @Override
             public String getPresentableText() {
+                if (element.getFunctionDefinition() != null) {
+                    return element.getFunctionDefinition().getLident().getText() + " "
+                            + element.getFunctionDefinition().getFunctionArguments().getText();
+                } else if (element.getVariableDefinition() != null) {
+                    return element.getVariableDefinition().getText();
+                }
                 return element.getText();
             }
 

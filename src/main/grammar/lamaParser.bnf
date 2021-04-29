@@ -85,15 +85,15 @@ definition ::=
     | functionDefinition
     | infixDefinition
      {
-//    mixin="ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl"
-//    implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
-    methods=[getKey getValue getName setName getNameIdentifier getPresentation ]
+    mixin="ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl"
+    implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
+    methods=[getKey getValue getName setName getNameIdentifier getPresentation getReferences ]
 }
 
 variableUsage ::= lident {
-     mixin="ru.mse.itmo.lama.language.psi.ref.usageRef.VarUsageElemImpl"
-     implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
-     methods=[getName setName getNameIdentifier getPresentation getReferences]
+//     mixin="ru.mse.itmo.lama.language.psi.ref.usageRef.VarUsageElemImpl"
+//     implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
+     methods=[getName setName getNameIdentifier getPresentation ]
 }
 
 

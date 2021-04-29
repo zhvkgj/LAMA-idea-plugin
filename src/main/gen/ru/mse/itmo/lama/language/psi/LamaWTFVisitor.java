@@ -57,7 +57,7 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinition(@NotNull LamaWTFDefinition o) {
-    visitPsiElement(o);
+    visitLamaElem(o);
   }
 
   public void visitDisjunction(@NotNull LamaWTFDisjunction o) {
@@ -205,7 +205,7 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitVariableUsage(@NotNull LamaWTFVariableUsage o) {
-    visitLamaElem(o);
+    visitPsiElement(o);
   }
 
   public void visitWhileDoExpression(@NotNull LamaWTFWhileDoExpression o) {

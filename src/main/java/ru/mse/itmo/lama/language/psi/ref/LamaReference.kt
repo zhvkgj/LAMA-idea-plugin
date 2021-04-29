@@ -1,10 +1,7 @@
 package ru.mse.itmo.lama.language.psi.ref
 
 import com.intellij.openapi.util.TextRange
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementResolveResult
-import com.intellij.psi.PsiReferenceBase
-import com.intellij.psi.ResolveResult
+import com.intellij.psi.*
 import com.jetbrains.rd.util.LogLevel
 import com.jetbrains.rd.util.getLogger
 import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
@@ -13,7 +10,7 @@ import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage
 import ru.mse.itmo.lama.util.PsiUtils
 
 
-class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange) : PsiReferenceBase<PsiElement>(o) { //, PsiPolyVariantReference {
+class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange) : PsiReferenceBase<PsiElement>(o), PsiPolyVariantReference { //, PsiPolyVariantReference {
 
     override fun resolve(): PsiElement? {
         val ans = if (myElement is LamaWTFDefinition) {
@@ -30,7 +27,7 @@ class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange)
         return ans.first()!!.element
     }
 
-    fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
+    override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val ans = if (myElement is LamaWTFDefinition) {
             multiResolveForDefinition()
         } else multiResolveForUsage(false)
@@ -88,7 +85,7 @@ class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange)
     }
 
     override fun isReferenceTo(element: PsiElement): Boolean {
-        getLogger<LamaReference>().log(LogLevel.Error, "called is Reference to $myElement", null)
+        getLogger<LamaReference>().log(LogLevel.Info, "called is Reference to $myElement", null)
         val refs = multiResolve(false)
 
         for (ref in refs) {

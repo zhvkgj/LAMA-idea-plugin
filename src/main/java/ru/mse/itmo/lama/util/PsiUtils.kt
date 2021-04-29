@@ -32,7 +32,14 @@ class PsiUtils {
             val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaWTFDefinition::class.java)
             if (foundData != null) {
                 for (elem in foundData) {
-//                    if (value == elem.value) ans.add(elem)
+                    if (value == elem.value) {
+                        ans.add(elem)
+//                        val childr = PsiTreeUtil.getChildrenOfType(elem, LamaWTFVariableUsage::class.java)
+//                        for (usage in childr) {
+//                            if (usage.text == value) ans.add(usage)
+//                        }
+
+                    }
                 }
             }
             return ans
@@ -102,14 +109,16 @@ class PsiUtils {
                 val lamaFile = manager.findFile(virtualFile)
                 if (lamaFile != null && lamaFile is LamaFile) {
                     if (lamaFile.isValid && lamaFile.children.isNotEmpty() && lamaFile.firstChild.children.isNotEmpty()) {
+                        val seenVars = mutableSetOf< LamaWTFVariableUsage>()
                         val foundData = PsiTreeUtil.getChildrenOfType(lamaFile.firstChild, LamaWTFDefinition::class.java)
                         for (elem in foundData) {
                             val childs = PsiTreeUtil.findChildrenOfType(elem, LamaWTFVariableUsage::class.java)
-                            for (child in childs) {
-                                if (child.lident.text == key) ans.add(child)
-                            }
+//                            for (child in childs) {
+//                                if (child.lident.text == key) seenVars.add(child)
+//                            }
                             if (key == elem.name) ans.add(elem)
                         }
+                        ans.addAll(seenVars)
                     }
                 }
             }
