@@ -11,14 +11,14 @@ import static ru.mse.itmo.lama.language.psi.LamaTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import ru.mse.itmo.lama.language.psi.*;
 
-public class LamaWTFFunctionArgumentImplWTF extends ASTWrapperPsiElement implements LamaWTFFunctionArgument {
+public class LamaWTFEtaExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFEtaExpression {
 
-  public LamaWTFFunctionArgumentImplWTF(ASTNode node) {
+  public LamaWTFEtaExpressionImplWTF(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull LamaWTFVisitor visitor) {
-    visitor.visitFunctionArgument(this);
+    visitor.visitEtaExpression(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class LamaWTFFunctionArgumentImplWTF extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
-  public LamaWTFPattern getPattern() {
-    return findNotNullChildByClass(LamaWTFPattern.class);
+  public LamaWTFBasicExpression getBasicExpression() {
+    return findNotNullChildByClass(LamaWTFBasicExpression.class);
   }
 
 }

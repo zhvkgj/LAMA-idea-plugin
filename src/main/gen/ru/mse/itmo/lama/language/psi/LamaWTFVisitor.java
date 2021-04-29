@@ -79,6 +79,10 @@ public class LamaWTFVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitEtaExpression(@NotNull LamaWTFEtaExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitExpression(@NotNull LamaWTFExpression o) {
     visitPsiElement(o);
   }
@@ -124,6 +128,10 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitInfixity(@NotNull LamaWTFInfixity o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLazyExpression(@NotNull LamaWTFLazyExpression o) {
     visitPsiElement(o);
   }
 

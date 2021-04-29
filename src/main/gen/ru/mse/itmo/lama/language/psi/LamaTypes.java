@@ -26,6 +26,7 @@ public interface LamaTypes {
   IElementType DO_WHILE_EXPRESSION = new LamaElementType("DO_WHILE_EXPRESSION");
   IElementType ELSE_PART = new LamaElementType("ELSE_PART");
   IElementType EQUALITY = new LamaElementType("EQUALITY");
+  IElementType ETA_EXPRESSION = new LamaElementType("ETA_EXPRESSION");
   IElementType EXPRESSION = new LamaElementType("EXPRESSION");
   IElementType FOR_EXPRESSION = new LamaElementType("FOR_EXPRESSION");
   IElementType FUNCTION_ARGUMENT = new LamaElementType("FUNCTION_ARGUMENT");
@@ -38,6 +39,7 @@ public interface LamaTypes {
   IElementType INFIXITY = new LamaElementType("INFIXITY");
   IElementType INFIX_DEFINITION = new LamaElementType("INFIX_DEFINITION");
   IElementType INFIX_HEAD = new LamaElementType("INFIX_HEAD");
+  IElementType LAZY_EXPRESSION = new LamaElementType("LAZY_EXPRESSION");
   IElementType LEVEL = new LamaElementType("LEVEL");
   IElementType LIST_EXPRESSION = new LamaElementType("LIST_EXPRESSION");
   IElementType LIST_PATTERN = new LamaElementType("LIST_PATTERN");
@@ -168,6 +170,9 @@ public interface LamaTypes {
       else if (type == EQUALITY) {
         return new LamaWTFEqualityImplWTF(node);
       }
+      else if (type == ETA_EXPRESSION) {
+        return new LamaWTFEtaExpressionImplWTF(node);
+      }
       else if (type == EXPRESSION) {
         return new LamaWTFExpressionImplWTF(node);
       }
@@ -203,6 +208,9 @@ public interface LamaTypes {
       }
       else if (type == INFIX_HEAD) {
         return new LamaWTFInfixHeadImplWTF(node);
+      }
+      else if (type == LAZY_EXPRESSION) {
+        return new LamaWTFLazyExpressionImplWTF(node);
       }
       else if (type == LEVEL) {
         return new LamaWTFLevelImplWTF(node);

@@ -618,6 +618,19 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // eta basicExpression
+  public static boolean etaExpression(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "etaExpression")) return false;
+    if (!nextTokenIs(builder_, ETA)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, ETA);
+    result_ = result_ && basicExpression(builder_, level_ + 1);
+    exit_section_(builder_, marker_, ETA_EXPRESSION, result_);
+    return result_;
+  }
+
+  /* ********************************************************** */
   // basicExpression [ ';' expression ]
   public static boolean expression(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expression")) return false;
@@ -668,14 +681,12 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // lident |
-  //     pattern
+  // pattern
   public static boolean functionArgument(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "functionArgument")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_, FUNCTION_ARGUMENT, "<function argument>");
-    result_ = consumeToken(builder_, LIDENT);
-    if (!result_) result_ = pattern(builder_, level_ + 1);
+    result_ = pattern(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, false, null);
     return result_;
   }
@@ -845,6 +856,19 @@ public class LamaParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = consumeToken(builder_, INFIXL);
     if (!result_) result_ = consumeToken(builder_, INFIXR);
     exit_section_(builder_, level_, marker_, result_, false, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // lazy basicExpression
+  public static boolean lazyExpression(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "lazyExpression")) return false;
+    if (!nextTokenIs(builder_, LAZY)) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = consumeToken(builder_, LAZY);
+    result_ = result_ && basicExpression(builder_, level_ + 1);
+    exit_section_(builder_, marker_, LAZY_EXPRESSION, result_);
     return result_;
   }
 
@@ -1709,7 +1733,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     return result_;
   }
 
-  // decimal                 |
+  // '-' ? decimal           |
   //     string                  |
   //     char                    |
   //     lident                  |
@@ -1719,7 +1743,9 @@ public class LamaParser implements PsiParser, LightPsiParser {
   //     fun '(' functionArguments ')' functionBody |
   //     skip                    |
   //     syntaxExpression        |
-  //     '(' scopeExpression ')'   |
+  //     '(' scopeExpression ')' |
+  //     lazyExpression          |
+  //     etaExpression           |
   //     listExpression          |
   //     arrayExpression         |
   //     sExpression             |
@@ -1732,7 +1758,7 @@ public class LamaParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(builder_, level_, "primary")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_, PRIMARY, "<primary>");
-    result_ = consumeTokenSmart(builder_, DECIMAL);
+    result_ = primary_0(builder_, level_ + 1);
     if (!result_) result_ = consumeTokenSmart(builder_, STRING);
     if (!result_) result_ = consumeTokenSmart(builder_, CHAR);
     if (!result_) result_ = consumeTokenSmart(builder_, LIDENT);
@@ -1743,6 +1769,8 @@ public class LamaParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = consumeTokenSmart(builder_, SKIP);
     if (!result_) result_ = syntaxExpression(builder_, level_ + 1);
     if (!result_) result_ = primary_10(builder_, level_ + 1);
+    if (!result_) result_ = lazyExpression(builder_, level_ + 1);
+    if (!result_) result_ = etaExpression(builder_, level_ + 1);
     if (!result_) result_ = listExpression(builder_, level_ + 1);
     if (!result_) result_ = arrayExpression(builder_, level_ + 1);
     if (!result_) result_ = sExpression(builder_, level_ + 1);
@@ -1753,6 +1781,24 @@ public class LamaParser implements PsiParser, LightPsiParser {
     if (!result_) result_ = caseExpression(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, result_, false, null);
     return result_;
+  }
+
+  // '-' ? decimal
+  private static boolean primary_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "primary_0")) return false;
+    boolean result_;
+    Marker marker_ = enter_section_(builder_);
+    result_ = primary_0_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, DECIMAL);
+    exit_section_(builder_, marker_, null, result_);
+    return result_;
+  }
+
+  // '-' ?
+  private static boolean primary_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "primary_0_0")) return false;
+    consumeTokenSmart(builder_, "-");
+    return true;
   }
 
   // fun '(' functionArguments ')' functionBody

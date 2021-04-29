@@ -47,6 +47,12 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
 
   @Override
   @Nullable
+  public LamaWTFEtaExpression getEtaExpression() {
+    return findChildByClass(LamaWTFEtaExpression.class);
+  }
+
+  @Override
+  @Nullable
   public LamaWTFForExpression getForExpression() {
     return findChildByClass(LamaWTFForExpression.class);
   }
@@ -67,6 +73,12 @@ public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF imple
   @Nullable
   public LamaWTFIfExpression getIfExpression() {
     return findChildByClass(LamaWTFIfExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public LamaWTFLazyExpression getLazyExpression() {
+    return findChildByClass(LamaWTFLazyExpression.class);
   }
 
   @Override

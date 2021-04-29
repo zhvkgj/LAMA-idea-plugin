@@ -69,9 +69,9 @@
     // Section 2.1.2
     uident='regexp:[A-Z][a-zA-Z_0-9]*'
     lident='regexp:[a-z][a-zA-Z_0-9]*'
-    decimal='regexp:-?[0-9]+'
-    string="regexp:\"([^\"\\]|\\.)*\""
-    char="regexp:'([^']|''|\n|\t)'"
+    decimal='regexp:[0-9]+'
+    string="regexp:\"([^\"]|\"\")*\""
+    char="regexp:'([^']|''|\\n|\\t)'"
 
     infixop="regexp:[+*/%$#@!|&\^?<>:=\\-]+"
   ]
@@ -98,9 +98,7 @@ functionDefinition ::= [ public ] fun lident '(' functionArguments ')' functionB
 
 functionArguments ::= [ functionArgument ( ',' functionArgument ) * ]
 
-functionArgument ::=
-    lident |
-    pattern
+functionArgument ::= pattern
 
 functionBody ::= '{' scopeExpression '}'
 
@@ -146,8 +144,12 @@ functionCall ::=
 arrayIndexing ::=
     postfixExpression '[' expression ']' {extends=postfixExpression}
 
+lazyExpression ::= lazy basicExpression
+
+etaExpression ::= eta basicExpression
+
 primary ::=
-    decimal                 |
+    '-' ? decimal           |
     string                  |
     char                    |
     lident                  |
@@ -157,7 +159,9 @@ primary ::=
     fun '(' functionArguments ')' functionBody |
     skip                    |
     syntaxExpression        |
-    '(' scopeExpression ')'   |
+    '(' scopeExpression ')' |
+    lazyExpression          |
+    etaExpression           |
     listExpression          |
     arrayExpression         |
     sExpression             |

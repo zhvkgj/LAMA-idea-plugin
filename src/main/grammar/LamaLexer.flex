@@ -30,9 +30,9 @@ SINGLECOMMENT=--[^\r\n]*
 MULTICOMMENT=\(\*(.|\n)*\*\)
 UIDENT=[A-Z][a-zA-Z_0-9]*
 LIDENT=[a-z][a-zA-Z_0-9]*
-DECIMAL=-?[0-9]+
-STRING=\"([^\"\\]|\\.)*\"
-CHAR='([^']|''|\n|\t)'
+DECIMAL=[0-9]+
+STRING=\"([^\"]|\"\")*\"
+CHAR='([^']|''|\\n|\\t)'
 INFIXOP=[+*/%$#@!|&\^?<>:=\\-]+
 
 %%

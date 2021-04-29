@@ -17,6 +17,9 @@ public interface LamaWTFPrimary extends LamaWTFPostfixExpression {
   LamaWTFDoWhileExpression getDoWhileExpression();
 
   @Nullable
+  LamaWTFEtaExpression getEtaExpression();
+
+  @Nullable
   LamaWTFForExpression getForExpression();
 
   @Nullable
@@ -27,6 +30,9 @@ public interface LamaWTFPrimary extends LamaWTFPostfixExpression {
 
   @Nullable
   LamaWTFIfExpression getIfExpression();
+
+  @Nullable
+  LamaWTFLazyExpression getLazyExpression();
 
   @Nullable
   LamaWTFListExpression getListExpression();
