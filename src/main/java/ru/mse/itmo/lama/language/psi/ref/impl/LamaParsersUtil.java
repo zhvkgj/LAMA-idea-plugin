@@ -54,7 +54,7 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
         return infixDefinition.getFunctionBody().getScopeExpression();
     }
 
-    private static PsiElement resolveNeededKeyElement(LamaWTFDefinition element) {
+    public static PsiElement resolveNeededKeyElement(LamaWTFDefinition element) {
         PsiElement ans = null;
 
         if (element.getFunctionDefinition() != null) {

@@ -4,6 +4,7 @@ import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import ru.mse.itmo.lama.language.psi.LamaWTFDefinition;
 import ru.mse.itmo.lama.util.PsiUtils;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class LamaChooseByNameContributor implements ChooseByNameContributor {
 
         var foundElements = PsiUtils.Companion.findAll(project);
         var names = new ArrayList<String>(foundElements.size());
-        for (LamaElem foundElement : foundElements) {
+        for (LamaWTFDefinition foundElement : foundElements) {
             var name = foundElement.getName();
             if (name != null && name.length() > 0) {
                 names.add(name);

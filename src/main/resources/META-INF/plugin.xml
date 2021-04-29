@@ -19,11 +19,11 @@
                                implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Lama"
                                        implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
-        <psi.referenceContributor language="Lama" implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>
         <lang.findUsagesProvider language="Lama"
                                  implementationClass="ru.mse.itmo.lama.language.psi.ref.LamaFindUsagesProvider"/>
-<!--        <lang.findUsagesProvider language="Lama"-->
-<!--                                 implementationClass="ru.mse.itmo.lama.language.psi.ref.LamaVariableFindUsagesProvider"/>-->
+
+        <psi.referenceContributor language="Lama" implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>
+
         <gotoSymbolContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaChooseByNameContributor"/>
     </extensions>
 

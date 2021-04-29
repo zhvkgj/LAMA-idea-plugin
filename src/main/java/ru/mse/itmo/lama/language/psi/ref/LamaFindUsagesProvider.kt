@@ -10,17 +10,18 @@ import com.intellij.psi.util.elementType
 import com.jetbrains.rd.util.LogLevel
 import com.jetbrains.rd.util.getLogger
 import ru.mse.itmo.lama.language.LamaLexerAdapter
-import ru.mse.itmo.lama.language.psi.LamaElementType
 import ru.mse.itmo.lama.language.psi.LamaTypes
+import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
 
 
 class LamaFindUsagesProvider : FindUsagesProvider {
 
     override fun getWordsScanner(): WordsScanner? {
         return DefaultWordsScanner(LamaLexerAdapter(),
-                TokenSet.create(LamaTypes.LIDENT),
+                TokenSet.create(LamaTypes.LIDENT, LamaTypes.PRIMARY),
                 TokenSet.create(LamaTypes.SINGLECOMMENT, LamaTypes.MULTICOMMENT),
                 TokenSet.create(LamaTypes.CHAR))
+//                TokenSet.EMPTY)
     }
 
     override fun canFindUsagesFor(psiElement: PsiElement): Boolean {
@@ -30,7 +31,7 @@ class LamaFindUsagesProvider : FindUsagesProvider {
         if (refs.isNotEmpty()) {
             str = ""
             for (ref in refs) {
-                str += "${ref.element.text} + ${ref.resolve()}" + "\t"
+                str += "${ref.element.text} + ${ref.resolve()}" + "${ref.resolve()?.text}" + "\t"
             }
         }
 
@@ -44,7 +45,12 @@ class LamaFindUsagesProvider : FindUsagesProvider {
 
     override fun getType(element: PsiElement): String {
         return if (element is LamaElem) {
-            (element.elementType as LamaElementType).toString()
+//            (element.elementType as LamaElementType).toString()
+            if (element is LamaWTFDefinition) {
+                "definition"
+            } else {
+                "identifier"
+            }
         } else {
             if (element.elementType != null) {
                 element.elementType.toString()
