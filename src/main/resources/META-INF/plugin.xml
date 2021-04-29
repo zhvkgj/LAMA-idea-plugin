@@ -19,11 +19,13 @@
         <lang.parserDefinition language="Lama"
                                implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Lama"
-                                       implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
+                                       implementationClass="ru.mse.itmo.lama.language.highlighting.LamaSyntaxHighlighterFactory"/>
         <lang.commenter language="Lama" implementationClass="ru.mse.itmo.lama.editor.LamaCommenter"/>
-        <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.LamaAnnotator"/>
-
-        <!--        <psi.referenceContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
+        <!-- annotators -->
+        <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.annotators.LamaHighlightAnnotator"/>
+        <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.annotators.LamaSyntaxErrorAnnotator"/>
+        <!-- brace matcher -->
+        <lang.braceMatcher language="Lama" implementationClass="ru.mse.itmo.lama.language.highlighting.NonTrivial"/>
     </extensions>
 
     <actions>

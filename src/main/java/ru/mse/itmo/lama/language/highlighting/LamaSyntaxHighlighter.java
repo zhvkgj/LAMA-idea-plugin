@@ -1,10 +1,11 @@
-package ru.mse.itmo.lama.language;
+package ru.mse.itmo.lama.language.highlighting;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
+import ru.mse.itmo.lama.language.LamaLexerAdapter;
 import ru.mse.itmo.lama.language.psi.LamaTypes;
 import org.jetbrains.annotations.NotNull;
 

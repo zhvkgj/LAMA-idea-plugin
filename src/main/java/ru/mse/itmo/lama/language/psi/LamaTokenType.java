@@ -12,7 +12,7 @@ public class LamaTokenType extends IElementType {
 
     @Override
     public String toString() {
-        return "SimpleTokenType." + super.toString();
+        return super.toString();
     }
 
 }

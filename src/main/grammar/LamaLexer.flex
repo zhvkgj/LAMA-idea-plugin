@@ -1,4 +1,4 @@
-package ru.mse.itmo.lama.language;
+package ru.mse.itmo.lama.language.parser;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -75,6 +75,12 @@ INFIXOP=[+*/%$#@!|&\^?<>:=\\-]+
   "->"                 { return HENCE; }
   "|"                  { return ALT; }
   "#"                  { return SHARP; }
+  "("                  { return LB; }
+  ")"                  { return RB; }
+  "{"                  { return LCURLY; }
+  "}"                  { return RCURLY; }
+  "["                  { return LSQUARE; }
+  "]"                  { return RSQUARE; }
 
   {SPACE}              { return SPACE; }
   {SINGLECOMMENT}      { return SINGLECOMMENT; }

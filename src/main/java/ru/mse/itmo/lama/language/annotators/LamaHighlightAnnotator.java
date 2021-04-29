@@ -1,4 +1,4 @@
-package ru.mse.itmo.lama.language;
+package ru.mse.itmo.lama.language.annotators;
 
 import static com.intellij.lang.annotation.HighlightSeverity.INFORMATION;
 
@@ -11,8 +11,9 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import ru.mse.itmo.lama.language.psi.*;
 
-public class LamaAnnotator implements Annotator {
-    LamaAnnotator() {
+
+public class LamaHighlightAnnotator implements Annotator {
+    LamaHighlightAnnotator() {
     }
 
     @Override
