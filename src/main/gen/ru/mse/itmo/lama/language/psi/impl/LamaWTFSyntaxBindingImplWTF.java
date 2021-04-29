@@ -13,7 +13,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFSyntaxBindingImplWTF extends ASTWrapperPsiElement implements LamaWTFSyntaxBinding {
 
-  public LamaWTFSyntaxBindingImplWTF(@NotNull ASTNode node) {
+  public LamaWTFSyntaxBindingImplWTF(ASTNode node) {
     super(node);
   }
 

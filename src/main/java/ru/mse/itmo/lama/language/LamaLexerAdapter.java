@@ -4,6 +4,6 @@ import com.intellij.lexer.FlexAdapter;
 
 public class LamaLexerAdapter extends FlexAdapter {
     public LamaLexerAdapter() {
-        super(new LamaLexer(null));
+        super(new _LamaLexer(null));
     }
 }

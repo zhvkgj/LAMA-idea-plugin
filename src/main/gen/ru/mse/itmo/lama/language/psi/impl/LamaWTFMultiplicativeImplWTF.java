@@ -13,7 +13,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFMultiplicativeImplWTF extends ASTWrapperPsiElement implements LamaWTFMultiplicative {
 
-  public LamaWTFMultiplicativeImplWTF(@NotNull ASTNode node) {
+  public LamaWTFMultiplicativeImplWTF(ASTNode node) {
     super(node);
   }
 

@@ -55,8 +55,8 @@
 
     // Section 2.1.1
     space='regexp:\s+'
-    singleComment='regexp:--'
-    multiComment='regexp:\(\*.*?\*\)'
+    singleComment='regexp:--[^\r\n]*'
+    multiComment='regexp:\(\*(.|\n)*\*\)'
 
     // Section 2.1.2
     uident='regexp:[A-Z][a-zA-Z_0-9]*'
@@ -67,9 +67,6 @@
 
     infixop="regexp:[+*/%$#@!|&\^?<>:=\\-]+"
   ]
-//
-//  name(".*expr")='expression'
-//  extends(".*expr")=expr
 }
 
 compilationUnit ::= importRule * scopeExpression
@@ -129,8 +126,6 @@ multiplicative ::= customOperatorExpression ( ('*' | '/' | '%') customOperatorEx
 customOperatorExpression ::= dotNotation ( infixop dotNotation ) *
 
 dotNotation ::= postfixExpression ( '.' (functionCall | lident) ) *
-
-//multiplicative ::= postfixExpression
 
 postfixExpression ::=
     primary      |

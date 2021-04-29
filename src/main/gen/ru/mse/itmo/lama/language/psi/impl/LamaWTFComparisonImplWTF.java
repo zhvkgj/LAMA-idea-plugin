@@ -13,7 +13,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFComparisonImplWTF extends ASTWrapperPsiElement implements LamaWTFComparison {
 
-  public LamaWTFComparisonImplWTF(@NotNull ASTNode node) {
+  public LamaWTFComparisonImplWTF(ASTNode node) {
     super(node);
   }
 

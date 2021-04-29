@@ -12,7 +12,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFPrimaryImplWTF extends LamaWTFPostfixExpressionImplWTF implements LamaWTFPrimary {
 
-  public LamaWTFPrimaryImplWTF(@NotNull ASTNode node) {
+  public LamaWTFPrimaryImplWTF(ASTNode node) {
     super(node);
   }
 
