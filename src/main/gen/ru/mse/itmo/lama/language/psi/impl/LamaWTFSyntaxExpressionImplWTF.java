@@ -13,7 +13,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFSyntaxExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFSyntaxExpression {
 
-  public LamaWTFSyntaxExpressionImplWTF(@NotNull ASTNode node) {
+  public LamaWTFSyntaxExpressionImplWTF(ASTNode node) {
     super(node);
   }
 

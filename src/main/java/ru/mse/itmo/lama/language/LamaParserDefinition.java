@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class LamaParserDefinition implements ParserDefinition {
 
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-//    public static final TokenSet COMMENTS = TokenSet.create(LamaTypes.COMMENT);
+    public static final TokenSet COMMENTS = TokenSet.create(LamaTypes.SINGLECOMMENT, LamaTypes.MULTICOMMENT);
 
     public static final IFileElementType FILE = new IFileElementType(LamaLanguage.INSTANCE);
 
@@ -38,8 +38,7 @@ public class LamaParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getCommentTokens() {
-//        return COMMENTS;
-        return TokenSet.EMPTY;
+        return COMMENTS;
     }
 
     @NotNull

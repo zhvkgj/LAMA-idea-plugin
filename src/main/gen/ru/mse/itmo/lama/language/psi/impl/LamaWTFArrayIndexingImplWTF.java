@@ -12,7 +12,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFArrayIndexingImplWTF extends LamaWTFPostfixExpressionImplWTF implements LamaWTFArrayIndexing {
 
-  public LamaWTFArrayIndexingImplWTF(@NotNull ASTNode node) {
+  public LamaWTFArrayIndexingImplWTF(ASTNode node) {
     super(node);
   }
 

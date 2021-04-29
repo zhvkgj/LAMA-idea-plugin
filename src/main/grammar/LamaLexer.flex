@@ -1,4 +1,4 @@
-package ru.mse.itmo.lama.language.parser;
+package ru.mse.itmo.lama.language;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -26,8 +26,8 @@ EOL=\R
 WHITE_SPACE=\s+
 
 SPACE=[ \t\n\x0B\f\r]+
-SINGLECOMMENT=--
-MULTICOMMENT=\(\*.*?\*\)
+SINGLECOMMENT=--[^\r\n]*
+MULTICOMMENT=\(\*(.|\n)*\*\)
 UIDENT=[A-Z][a-zA-Z_0-9]*
 LIDENT=[a-z][a-zA-Z_0-9]*
 DECIMAL=-?[0-9]+

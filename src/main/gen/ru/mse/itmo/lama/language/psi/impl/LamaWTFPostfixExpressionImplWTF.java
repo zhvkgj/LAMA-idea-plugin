@@ -13,7 +13,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public abstract class LamaWTFPostfixExpressionImplWTF extends ASTWrapperPsiElement implements LamaWTFPostfixExpression {
 
-  public LamaWTFPostfixExpressionImplWTF(@NotNull ASTNode node) {
+  public LamaWTFPostfixExpressionImplWTF(ASTNode node) {
     super(node);
   }
 

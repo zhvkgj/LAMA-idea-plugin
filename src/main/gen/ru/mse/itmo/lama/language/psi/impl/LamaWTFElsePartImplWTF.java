@@ -13,7 +13,7 @@ import ru.mse.itmo.lama.language.psi.*;
 
 public class LamaWTFElsePartImplWTF extends ASTWrapperPsiElement implements LamaWTFElsePart {
 
-  public LamaWTFElsePartImplWTF(@NotNull ASTNode node) {
+  public LamaWTFElsePartImplWTF(ASTNode node) {
     super(node);
   }
 
