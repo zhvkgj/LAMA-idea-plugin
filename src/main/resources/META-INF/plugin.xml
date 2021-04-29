@@ -20,6 +20,8 @@
         <lang.syntaxHighlighterFactory language="Lama"
                                        implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
         <lang.commenter language="Lama" implementationClass="ru.mse.itmo.lama.editor.LamaCommenter"/>
+        <completion.contributor language="Lama"
+                                implementationClass="ru.mse.itmo.lama.language.completion.LamaCompletionContributor"/>
         <!--        <psi.referenceContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
     </extensions>
 
