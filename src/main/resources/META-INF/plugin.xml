@@ -26,6 +26,9 @@
         <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.annotators.LamaSyntaxErrorAnnotator"/>
         <!-- brace matcher -->
         <lang.braceMatcher language="Lama" implementationClass="ru.mse.itmo.lama.language.highlighting.NonTrivial"/>
+        <!-- completion -->
+        <completion.contributor language="Lama"
+                                implementationClass="ru.mse.itmo.lama.language.completion.LamaCompletionContributor"/>
     </extensions>
 
     <actions>
