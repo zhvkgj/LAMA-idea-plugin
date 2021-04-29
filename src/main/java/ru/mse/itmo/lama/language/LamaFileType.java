@@ -3,6 +3,7 @@ package ru.mse.itmo.lama.language;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.mse.itmo.lama.icons.LamaIcons;
 
 import javax.swing.*;
 
@@ -34,6 +35,6 @@ public class LamaFileType extends LanguageFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return null;
+        return LamaIcons.FILE;
     }
 }
