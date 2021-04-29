@@ -4,11 +4,11 @@ import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.sun.istack.Nullable;
-import ru.mse.itmo.lama.language.psi.LamaWTFDefinition;
-import ru.mse.itmo.lama.language.psi.LamaWTFFunctionDefinition;
-import ru.mse.itmo.lama.language.psi.LamaWTFInfixDefinition;
-import ru.mse.itmo.lama.language.psi.LamaWTFVariableDefinition;
+import org.jetbrains.annotations.NotNull;
+import ru.mse.itmo.lama.language.psi.*;
 import ru.mse.itmo.lama.language.psi.ref.LamaElementFactory;
 
 import javax.swing.*;
@@ -156,4 +156,48 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
             }
         };
     }
+
+
+    public static PsiElement setName(LamaWTFVariableUsage element, String newName) {
+        var keyNode = element.getLident();
+        var newIndent = LamaElementFactory.Companion.createLamaElem(element.getProject(), newName);
+        element.getNode().replaceChild(keyNode.getNode(), newIndent.getNode());
+        return element;
+    }
+
+    public static String getName(LamaWTFVariableUsage element) {
+        return element.getLident().getText();
+    }
+
+    public static PsiElement getNameIdentifier(LamaWTFVariableUsage element) {
+        return element.getLident();
+    }
+
+    public static ItemPresentation getPresentation(final LamaWTFVariableUsage element) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return element.getLident().getText();
+            }
+
+            @Nullable
+            @Override
+            public String getLocationString() {
+                PsiFile containingFile = element.getContainingFile();
+                return containingFile == null ? null : containingFile.getName();
+            }
+
+            @Override
+            public Icon getIcon(boolean unused) {
+                return null;
+            }
+        };
+    }
+
+
+    public static PsiReference @NotNull [] getReferences(final PsiElement element) {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(element);
+    }
+
 }

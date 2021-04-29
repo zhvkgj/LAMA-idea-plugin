@@ -9,17 +9,22 @@ import com.intellij.psi.util.PsiTreeUtil
 import ru.mse.itmo.lama.language.LamaFileType
 import ru.mse.itmo.lama.language.psi.LamaFile
 import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
+import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage
 import ru.mse.itmo.lama.language.psi.ref.LamaElem
 
 class PsiUtils {
     companion object {
 
-        fun findByValueFromParent(parent: PsiElement, value: String) : List<LamaElem> {
+        fun findByValueFromParent(parent: PsiElement, value: String) : List<PsiElement> {
             val ans = ArrayList<LamaElem>()
             val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaElem::class.java)
             for (elem in foundData) {
                 val foundVal = elem as LamaWTFDefinition
                 if (value == foundVal.value) ans.add(elem)
+            }
+            val foundUsages = PsiTreeUtil.getChildrenOfType(parent, LamaWTFVariableUsage::class.java)?: return ans
+            for (usage in foundUsages) {
+                if (usage.lident.text == value) ans.add(usage)
             }
             return ans
         }
@@ -27,7 +32,7 @@ class PsiUtils {
 
         fun findByKeyFromParent(parent: PsiElement, key: String) : List<LamaElem> {
             val ans = ArrayList<LamaElem>()
-            val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaElem::class.java)
+            val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaElem::class.java) ?: return emptyList()
             for (elem in foundData) {
                 if (key == elem.name) ans.add(elem)
             }

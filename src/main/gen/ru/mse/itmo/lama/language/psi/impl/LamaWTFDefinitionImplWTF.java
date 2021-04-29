@@ -6,7 +6,6 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mse.itmo.lama.language.psi.*;
@@ -77,10 +76,9 @@ public class LamaWTFDefinitionImplWTF extends LamaElemImpl implements LamaWTFDef
     return LamaParsersUtil.getPresentation(this);
   }
 
-
   @Override
   public PsiReference @NotNull [] getReferences() {
-    return ReferenceProvidersRegistry.getReferencesFromProviders(this);
+    return LamaParsersUtil.getReferences(this);
   }
 
 }

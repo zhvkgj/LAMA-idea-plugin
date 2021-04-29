@@ -14,10 +14,10 @@ import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage
 class LamaReferenceContributor : PsiReferenceContributor() {
 
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
-//        registrar.registerReferenceProvider(
-//                PlatformPatterns.psiElement(LamaWTFVariableUsage::class.java),
-//                LamaFileReferenceProvider()
-//        )
+        registrar.registerReferenceProvider(
+                PlatformPatterns.psiElement(LamaWTFVariableUsage::class.java),
+                LamaFileReferenceProvider()
+        )
 
         registrar.registerReferenceProvider(
                 PlatformPatterns.psiElement(LamaWTFDefinition::class.java),

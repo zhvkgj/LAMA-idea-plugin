@@ -12,6 +12,11 @@ class LamaElementFactory {
             val tmpFile = createLamaFile(project, newName)
             return tmpFile.children.first().firstChild
         }
+//
+//        fun createLamaVarUsageElem(project: Project, newName: String) : PsiElement {
+//            val tmpFile = createLamaFile(project, newName)
+//            return tmpFile.children.first().firstChild
+//        }
 
 
         fun createLamaFile(project: Project, content: String): LamaFile {
