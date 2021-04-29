@@ -65,7 +65,7 @@ class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange)
         val parent = PsiUtils.getParentOfType(myElement, LamaWTFScopeExpression::class.java) ?: return null
         val elem = myElement as LamaElem
         val name = elem.name
-        val foundData = PsiUtils.findByValueFromParent(parent, name!!)
+        val foundData = PsiUtils.findByValueFromParentForDef(parent, name!!)
 
         return PsiElementResolveResult.createResults(foundData)
     }

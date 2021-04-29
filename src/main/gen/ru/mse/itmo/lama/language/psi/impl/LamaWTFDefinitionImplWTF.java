@@ -6,7 +6,6 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mse.itmo.lama.language.psi.*;
@@ -74,11 +73,6 @@ public class LamaWTFDefinitionImplWTF extends ASTWrapperPsiElement implements La
   @Override
   public ItemPresentation getPresentation() {
     return LamaParsersUtil.getPresentation(this);
-  }
-
-  @Override
-  public PsiReference @NotNull [] getReferences() {
-    return LamaParsersUtil.getReferences(this);
   }
 
 }

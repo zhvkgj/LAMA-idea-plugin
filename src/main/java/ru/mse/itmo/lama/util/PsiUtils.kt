@@ -27,19 +27,37 @@ class PsiUtils {
         }
 
 
-        fun findByValueFromParent(parent: PsiElement, value: String, isReturnAsVarUsage: Boolean = true) : List<PsiElement> {
-            val ans = ArrayList<PsiElement>()
+        fun findByValueFromParentForDef(parent: PsiElement, value: String) : List<LamaElem> {
+            val ans = ArrayList<LamaElem>()
+            val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaWTFDefinition::class.java)
+            if (foundData != null) {
+                for (elem in foundData) {
+//                    if (value == elem.value) ans.add(elem)
+                }
+            }
+            return ans
+        }
+
+
+        fun findByValueFromParent(parent: PsiElement, value: String, isReturnAsVarUsage: Boolean = true) : List<LamaElem> {
+            val ans = ArrayList<LamaElem>()
             val foundData = PsiTreeUtil.getChildrenOfType(parent, LamaWTFDefinition::class.java)
             if (foundData != null) {
                 for (elem in foundData) {
                     val foundVal = elem as LamaWTFDefinition
-                    if (value == foundVal.value) ans.add(elem)
+                    val foundUsages = PsiTreeUtil.findChildrenOfType(foundVal, LamaElem::class.java)
+                    for (usage in foundUsages) {
+                        if (value == usage.name) {
+                            ans.add(usage)
+                        }
+                    }
+//                    if (value == ) ans.add(elem)
                 }
             }
-            val foundUsages = PsiTreeUtil.getChildrenOfType(parent, LamaWTFVariableUsage::class.java)?: return ans
-            for (usage in foundUsages) {
-                if (usage.lident.text == value) ans.add(usage)
-            }
+//            val foundUsages = PsiTreeUtil.getChildrenOfType(parent, LamaWTFVariableUsage::class.java)?: return ans
+//            for (usage in foundUsages) {
+//                if (usage.lident.text == value) ans.add(usage)
+//            }
             return ans
         }
 

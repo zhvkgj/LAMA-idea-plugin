@@ -3,8 +3,6 @@ package ru.mse.itmo.lama.language.psi;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface LamaWTFDefinition extends PsiElement {
@@ -29,7 +27,5 @@ public interface LamaWTFDefinition extends PsiElement {
   PsiElement getNameIdentifier();
 
   ItemPresentation getPresentation();
-
-  PsiReference @NotNull [] getReferences();
 
 }

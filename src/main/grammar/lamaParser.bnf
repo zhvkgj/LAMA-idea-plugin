@@ -87,7 +87,7 @@ definition ::=
      {
 //    mixin="ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl"
 //    implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
-    methods=[getKey getValue getName setName getNameIdentifier getPresentation getReferences]
+    methods=[getKey getValue getName setName getNameIdentifier getPresentation ]
 }
 
 variableUsage ::= lident {
