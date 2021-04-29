@@ -3,15 +3,13 @@ package ru.mse.itmo.lama.language.psi.impl;
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mse.itmo.lama.language.psi.LamaWTFBasicExpression;
 import ru.mse.itmo.lama.language.psi.LamaWTFVariableDefinitionItem;
+import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage;
 import ru.mse.itmo.lama.language.psi.LamaWTFVisitor;
-
-import static ru.mse.itmo.lama.language.psi.LamaTypes.LIDENT;
 
 public class LamaWTFVariableDefinitionItemImplWTF extends ASTWrapperPsiElement implements LamaWTFVariableDefinitionItem {
 
@@ -37,8 +35,8 @@ public class LamaWTFVariableDefinitionItemImplWTF extends ASTWrapperPsiElement i
 
   @Override
   @NotNull
-  public PsiElement getLident() {
-    return findNotNullChildByType(LIDENT);
+  public LamaWTFVariableUsage getVariableUsage() {
+    return findNotNullChildByClass(LamaWTFVariableUsage.class);
   }
 
 }

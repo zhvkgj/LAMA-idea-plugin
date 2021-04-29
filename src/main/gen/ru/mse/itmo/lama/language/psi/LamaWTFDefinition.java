@@ -6,9 +6,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.mse.itmo.lama.language.psi.ref.LamaElem;
 
-public interface LamaWTFDefinition extends LamaElem {
+public interface LamaWTFDefinition extends PsiElement {
 
   @Nullable
   LamaWTFFunctionDefinition getFunctionDefinition();

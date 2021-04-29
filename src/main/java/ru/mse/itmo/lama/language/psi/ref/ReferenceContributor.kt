@@ -6,7 +6,6 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.util.ProcessingContext
 import com.jetbrains.rd.util.LogLevel
 import com.jetbrains.rd.util.getLogger
-import ru.mse.itmo.lama.language.psi.LamaWTFDefinition
 import ru.mse.itmo.lama.language.psi.LamaWTFExpression
 import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage
 
@@ -19,20 +18,20 @@ class LamaReferenceContributor : PsiReferenceContributor() {
                 LamaFileReferenceProvider()
         )
 
-        registrar.registerReferenceProvider(
-                PlatformPatterns.psiElement(LamaWTFDefinition::class.java),
-                object : PsiReferenceProvider() {
-                    override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
-                        val sym = element as LamaWTFDefinition
-                        getLogger<LamaReferenceContributor>().log(LogLevel.Info, sym.toString() + "\t ${sym.name}", null)
-                        if (sym.nameIdentifier == null) {
-                            return emptyArray()
-                        }
-                        val range = sym.textRange
-                        return arrayOf<PsiReference>(LamaReference(sym, range))
-                    }
-                }
-        )
+//        registrar.registerReferenceProvider(
+//                PlatformPatterns.psiElement(LamaWTFDefinition::class.java),
+//                object : PsiReferenceProvider() {
+//                    override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
+//                        val sym = element as LamaWTFDefinition
+//                        getLogger<LamaReferenceContributor>().log(LogLevel.Info, sym.toString() + "\t ${sym.name}", null)
+//                        if (sym.nameIdentifier == null) {
+//                            return emptyArray()
+//                        }
+//                        val range = sym.textRange
+//                        return arrayOf<PsiReference>(LamaReference(sym, range))
+//                    }
+//                }
+//        )
 
     }
 }

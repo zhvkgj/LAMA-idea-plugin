@@ -83,9 +83,10 @@ scopeExpression ::= definition * [ expression ]
 definition ::=
     variableDefinition
     | functionDefinition
-    | infixDefinition  {
-    mixin="ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl"
-    implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
+    | infixDefinition
+     {
+//    mixin="ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl"
+//    implements="ru.mse.itmo.lama.language.psi.ref.LamaElem"
     methods=[getKey getValue getName setName getNameIdentifier getPresentation getReferences]
 }
 
@@ -100,7 +101,7 @@ variableDefinition ::= ( var | public ) variableDefinitionSeq ';'
 
 variableDefinitionSeq ::= variableDefinitionItem ( ',' variableDefinitionItem ) *
 
-variableDefinitionItem ::= lident [ '=' basicExpression ]
+variableDefinitionItem ::= variableUsage [ '=' basicExpression ]
 
 functionDefinition ::= [ public ] fun lident '(' functionArguments ')' functionBody
 

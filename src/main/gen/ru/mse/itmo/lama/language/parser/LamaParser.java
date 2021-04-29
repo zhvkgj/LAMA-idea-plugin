@@ -1576,13 +1576,13 @@ public class LamaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // lident [ '=' basicExpression ]
+  // variableUsage [ '=' basicExpression ]
   public static boolean variableDefinitionItem(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variableDefinitionItem")) return false;
     if (!nextTokenIs(b, LIDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, LIDENT);
+    r = variableUsage(b, l + 1);
     r = r && variableDefinitionItem_1(b, l + 1);
     exit_section_(b, m, VARIABLE_DEFINITION_ITEM, r);
     return r;

@@ -57,7 +57,7 @@ public class LamaWTFVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinition(@NotNull LamaWTFDefinition o) {
-    visitLamaElem(o);
+    visitPsiElement(o);
   }
 
   public void visitDisjunction(@NotNull LamaWTFDisjunction o) {

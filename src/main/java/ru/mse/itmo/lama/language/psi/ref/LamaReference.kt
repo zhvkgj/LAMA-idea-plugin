@@ -10,7 +10,7 @@ import ru.mse.itmo.lama.language.psi.LamaWTFVariableUsage
 import ru.mse.itmo.lama.util.PsiUtils
 
 
-class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange) : PsiReferenceBase<PsiElement>(o), PsiPolyVariantReference { //, PsiPolyVariantReference {
+class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange) : PsiReferenceBase<PsiElement>(o), PsiPolyVariantReference, PsiReference { //, PsiPolyVariantReference {
 
     override fun resolve(): PsiElement? {
         val ans = if (myElement is LamaWTFDefinition) {
@@ -38,10 +38,13 @@ class LamaReference(o: PsiElement, textRange: TextRange = o.lastChild.textRange)
 
         val name = elem.lident.text
         val parent = PsiUtils.getParentOfType(myElement, LamaWTFScopeExpression::class.java) ?: return null
-        val properties = PsiUtils.findByKeyFromParent(parent, name!!)
+//        val properties = PsiUtils.findByValueFromParent(parent, name!!)
+        val children = parent.children
+        if (children.isEmpty()) {
+            return emptyArray()
+        }
 
-
-        val results = PsiElementResolveResult.createResults(properties)
+        val results = PsiElementResolveResult.createResults(children.first())
         return results.toList().toTypedArray()
     }
 

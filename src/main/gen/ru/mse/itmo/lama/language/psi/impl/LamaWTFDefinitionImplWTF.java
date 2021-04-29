@@ -1,6 +1,7 @@
 // This is a generated file. Not intended for manual editing.
 package ru.mse.itmo.lama.language.psi.impl;
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
@@ -9,10 +10,9 @@ import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mse.itmo.lama.language.psi.*;
-import ru.mse.itmo.lama.language.psi.ref.impl.LamaElemImpl;
 import ru.mse.itmo.lama.language.psi.ref.impl.LamaParsersUtil;
 
-public class LamaWTFDefinitionImplWTF extends LamaElemImpl implements LamaWTFDefinition {
+public class LamaWTFDefinitionImplWTF extends ASTWrapperPsiElement implements LamaWTFDefinition {
 
   public LamaWTFDefinitionImplWTF(@NotNull ASTNode node) {
     super(node);

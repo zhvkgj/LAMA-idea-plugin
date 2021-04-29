@@ -34,7 +34,7 @@ public class LamaParsersUtil extends GeneratedParserUtilBase {
         if (definitionItemList.size() == 0) {
             return null;
         }
-        return definitionItemList.get(0).getLident();
+        return definitionItemList.get(0).getVariableUsage();
     }
 
     private static PsiElement getValueFromVarDecl(LamaWTFVariableDefinition varDefinition) {
