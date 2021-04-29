@@ -53,6 +53,14 @@
     alt='|'
     sharp='#'
 
+    // brackets
+    lb='('
+    rb=')'
+    lcurly='{'
+    rcurly='}'
+    lsquare='['
+    rsquare=']'
+
     // Section 2.1.1
     space='regexp:\s+'
     singleComment='regexp:--[^\r\n]*'

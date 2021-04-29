@@ -86,11 +86,17 @@ public interface LamaTypes {
   IElementType INFIXOP = new LamaTokenType("infixop");
   IElementType INFIXR = new LamaTokenType("infixr");
   IElementType LAZY = new LamaTokenType("lazy");
+  IElementType LB = new LamaTokenType("(");
+  IElementType LCURLY = new LamaTokenType("{");
   IElementType LIDENT = new LamaTokenType("lident");
+  IElementType LSQUARE = new LamaTokenType("[");
   IElementType MULTICOMMENT = new LamaTokenType("multiComment");
   IElementType OD = new LamaTokenType("od");
   IElementType OF = new LamaTokenType("of");
   IElementType PUBLIC = new LamaTokenType("public");
+  IElementType RB = new LamaTokenType(")");
+  IElementType RCURLY = new LamaTokenType("}");
+  IElementType RSQUARE = new LamaTokenType("]");
   IElementType SEXP = new LamaTokenType("sexp");
   IElementType SHARP = new LamaTokenType("#");
   IElementType SINGLECOMMENT = new LamaTokenType("singleComment");

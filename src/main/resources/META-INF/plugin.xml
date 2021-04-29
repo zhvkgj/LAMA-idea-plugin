@@ -11,6 +11,7 @@
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Lama File" implementationClass="ru.mse.itmo.lama.language.LamaFileType"
@@ -18,11 +19,16 @@
         <lang.parserDefinition language="Lama"
                                implementationClass="ru.mse.itmo.lama.language.LamaParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Lama"
-                                       implementationClass="ru.mse.itmo.lama.language.LamaSyntaxHighlighterFactory"/>
+                                       implementationClass="ru.mse.itmo.lama.language.highlighting.LamaSyntaxHighlighterFactory"/>
         <lang.commenter language="Lama" implementationClass="ru.mse.itmo.lama.editor.LamaCommenter"/>
+        <!-- annotators -->
+        <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.annotators.LamaHighlightAnnotator"/>
+        <annotator language="Lama" implementationClass="ru.mse.itmo.lama.language.annotators.LamaSyntaxErrorAnnotator"/>
+        <!-- brace matcher -->
+        <lang.braceMatcher language="Lama" implementationClass="ru.mse.itmo.lama.language.highlighting.NonTrivial"/>
+        <!-- completion -->
         <completion.contributor language="Lama"
                                 implementationClass="ru.mse.itmo.lama.language.completion.LamaCompletionContributor"/>
-        <!--        <psi.referenceContributor implementation="ru.mse.itmo.lama.language.psi.ref.LamaReferenceContributor"/>-->
     </extensions>
 
     <actions>
