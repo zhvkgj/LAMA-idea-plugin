@@ -11,14 +11,12 @@ import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 import ru.mse.itmo.lama.language.LamaLanguage;
 import ru.mse.itmo.lama.language.completion.metadata.builin.LamaStdLibFunctionsProvider;
+import ru.mse.itmo.lama.language.completion.providers.patterns.LamaPatternProvider;
 
 public class LamaBuiltinCompletionProvider extends CompletionProvider<CompletionParameters> {
-    public static final ElementPattern<PsiElement> PATTERN = PlatformPatterns
-            .psiElement()
-            .withLanguage(LamaLanguage.INSTANCE);
+    public static final ElementPattern<PsiElement> PATTERN = LamaPatternProvider.getForBuiltIn();
 
     private static final LamaStdLibFunctionsProvider functionProvider = new LamaStdLibFunctionsProvider();
-
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {

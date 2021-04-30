@@ -22,4 +22,12 @@ public class LamaPatternProvider {
     private static ElementPattern<PsiElement> getForBlockComment() {
         return PlatformPatterns.psiElement(LamaTypes.MULTICOMMENT);
     }
+
+    public static ElementPattern<PsiElement> getForBuiltIn() {
+        return PlatformPatterns
+                .psiElement()
+                .withLanguage(LamaLanguage.INSTANCE)
+                .andNot(getForLineComment())
+                .andNot(getForBlockComment());
+    }
 }
