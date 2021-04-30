@@ -1,6 +1,7 @@
 package ru.mse.itmo.lama.language.completion.metadata.builin;
 
 import com.intellij.codeInsight.lookup.LookupElement;
+import ru.mse.itmo.lama.language.completion.metadata.LamaElement;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LamaStdLibFunctionsProvider {
-    private final static List<LamaFunction> BUILTIN = List.of(
+    private final static List<LamaElement> BUILTIN = List.of(
             function("assert", "(n, s, ...)"),
             function("string", "(x)"),
             function("length", "(x)"),
@@ -45,15 +46,17 @@ public class LamaStdLibFunctionsProvider {
             function("system", "(cmd)"),
             function("getEnv", "(name)"),
             function("random", "(n)"),
-            function("time", "()")
+            function("time", "()"),
+            operand("++", "(infix at +)")
     );
 
-    private final static List<LamaFunction> DataList = List.of(
+    private final static List<LamaElement> ListData = List.of(
             function("size", "(l)"),
             function("foldl", "(f, acc, l)"),
             function("foldr", "(f, acc, l)"),
             function("iter", "(f, l)"),
             function("map", "(f, l)"),
+            operand("+++", "infix at +"),
             function("reverse", "(l)"),
             function("assoc", "(l, x)"),
             function("find", "(f, l)"),
@@ -65,7 +68,7 @@ public class LamaStdLibFunctionsProvider {
             function("filter", "(f, l)")
     );
 
-    private final static List<LamaFunction> Array = List.of(
+    private final static List<LamaElement> Array = List.of(
             function("initArray", "(n, f)"),
             function("mapArray", "(f, a)"),
             function("arrayList", "(a)"),
@@ -76,7 +79,7 @@ public class LamaStdLibFunctionsProvider {
             function("iteriArray", "(f, a)")
     );
 
-    private final static List<LamaFunction> Ostap = List.of(
+    private final static List<LamaElement> Ostap = List.of(
             function("logOn", "()"),
             function("initOstap", "()"),
             function("memo", "(f)"),
@@ -86,6 +89,7 @@ public class LamaStdLibFunctionsProvider {
             function("empty", "(k)"),
             function("alt", "(a, b)"),
             function("seq", "(a, b)"),
+            operand("@", "infix at *"),
             function("lift", "(f)"),
             function("bypass", "(f)"),
             function("opt", "(a) {empty @ lift (None) | a @ fun (x) {Some (x)"),
@@ -104,7 +108,7 @@ public class LamaStdLibFunctionsProvider {
             function("expr", "(ops, opnd)")
     );
 
-    private final static List<LamaFunction> CollectionData = List.of(
+    private final static List<LamaElement> CollectionData = List.of(
             function("validateColl", "([t, compare])"),
             function("internalOf", "(m)"),
             function("compareOf", "(m)"),
@@ -140,7 +144,12 @@ public class LamaStdLibFunctionsProvider {
             function("hashOf", "(ht)")
     );
 
-    private final static List<LamaFunction> Matcher = List.of(
+    private final static List<LamaElement> Data = List.of(
+            operand("=?=", "infix at <"),
+            operand("===", "infix at ==")
+    );
+
+    private final static List<LamaElement> Matcher = List.of(
             function("createRegexp", "(r, name)"),
             function("showMatcher", "(m)"),
             function("endOfMatcher", "(m)"),
@@ -151,41 +160,41 @@ public class LamaStdLibFunctionsProvider {
             function("initMatcher", "(buf)")
     );
 
-    private final static List<LamaFunction> Buffer = List.of(
+    private final static List<LamaElement> Buffer = List.of(
             function("emptyBuffer", "()"),
             function("singletonBuffer", "(x)"),
             function("listBuffer", "(x)"),
             function("addBuffer", "(buf, x)"),
             function("concatBuffer", "(buf, x)"),
+            operand("<+", "infix at <+>"),
             function("getBuffer", "(buf)")
     );
 
-    private final static List<LamaFunction> Timer = List.of(
+    private final static List<LamaElement> Timer = List.of(
             function("timer", "()"),
             function("toSeconds", "(t)")
     );
 
-    private final static List<LamaFunction> Ref = List.of(
+    private final static List<LamaElement> Ref = List.of(
             function("ref", "(x)"),
             function("deref", "(x)")
     );
-
-    private final static List<LamaFunction> Lazy = List.of(
+    private final static List<LamaElement> Lazy = List.of(
             function("makeLazy", "(f)"),
             function("force", "(f)")
     );
 
-    private final static List<LamaFunction> STM = List.of(
+    private final static List<LamaElement> STM = List.of(
+            operand("=>>", "infix at =>"),
             function("returnST", "(x)"),
             function("chainST", "(xs)")
     );
 
-    private final static List<LamaFunction> Fun = List.of(
+    private final static List<LamaElement> Fun = List.of(
             function("id", "(x)"),
             function("fix", "(f)")
     );
-
-    private final static List<LamaFunction> Random = List.of(
+    private final static List<LamaElement> Random = List.of(
             function("randomInt", "()"),
             function("randomString", "(len)"),
             function("randomArray", "(f, n)"),
@@ -195,26 +204,31 @@ public class LamaStdLibFunctionsProvider {
 
     public List<LookupElement> getFunctions() {
         return Stream.of(
-            BUILTIN,
-            DataList,
-            Array,
-            Ostap,
-            CollectionData,
-            Matcher,
-            Buffer,
-            Timer,
-            Ref,
-            Lazy,
-            STM,
-            Fun,
-            Random
+                BUILTIN,
+                ListData,
+                Data,
+                Array,
+                Ostap,
+                CollectionData,
+                Matcher,
+                Buffer,
+                Timer,
+                Ref,
+                Lazy,
+                STM,
+                Fun,
+                Random
         )
                 .flatMap(Collection::stream)
-                .map(LamaFunction::getLookupElement)
+                .map(LamaElement::getLookupElement)
                 .collect(Collectors.toList());
     }
 
     private static LamaFunction function(String name, String signature) {
         return new LamaFunction(name, signature);
+    }
+
+    private static LamaOperand operand(String name, String signature) {
+        return new LamaOperand(name, signature);
     }
 }
