@@ -21,7 +21,7 @@ If you already have a project open in IDEA:
 1. Open the Settings dialog (File->Settings…)
 2. Highlight “Plugins” in the leftmost column
 3. Click “Install plugin from disk…”
-4. Select the “intellij-haxe.jar” file you downloaded
+4. Select the jar file you downloaded
 5. Allow IDEA to restart and initialize the plugin.
 
 The instruction from [Haxe Intellij](http://intellij-haxe.org/wiki/installation).
