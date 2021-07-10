@@ -18,7 +18,7 @@ java {
 }
 
 group = "org.example"
-version = "1.0-SNAPSHOT"
+version = "1.1.1"
 val myPluginName = "Plama"
 
 repositories {
@@ -59,9 +59,7 @@ tasks.clean {
 
 tasks {
     patchPluginXml {
-        changeNotes.set("""
-            Add change notes here.<br>
-            <em>most HTML tags may be used</em>        """.trimIndent())
+        changeNotes.set("Simple syntax highlighting and auto complete")
     }
 }
 
